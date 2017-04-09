@@ -64,6 +64,7 @@ func main() {
 	e := echo.New()
 	e.Debug = true
 	db := model.InitDB()
+	db.Migration()
 	// middleware setting
 	e.HTTPErrorHandler = JSONErrorHandler
 	e.Use(middleware.Logger())

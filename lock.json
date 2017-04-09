@@ -1,12 +1,38 @@
 {
-    "memo": "e81cc2cb20c5749b79cb0f42cab35f3eb61055f07d7352d99b06b146175242d4",
+    "memo": "9e84fe4bbbc2989a9054baf342b22c3e901474ccecec63bc85d05f282d0cde14",
     "projects": [
+        {
+            "name": "github.com/dgrijalva/jwt-go",
+            "version": "v3.0.0",
+            "revision": "d2709f9f1f31ebcda9651b03077758c1f3a0018c",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "github.com/jinzhu/gorm",
+            "version": "v1.0",
+            "revision": "5174cc5c242a728b435ea2be8a2f7f998e15429b",
+            "packages": [
+                ".",
+                "dialects/postgres"
+            ]
+        },
+        {
+            "name": "github.com/jinzhu/inflection",
+            "branch": "master",
+            "revision": "1c35d901db3da928c72a72d8458480cc9ade058f",
+            "packages": [
+                "."
+            ]
+        },
         {
             "name": "github.com/labstack/echo",
             "version": "v3.0.3",
             "revision": "8d504c1b699c757b267255c53b3e5219f9974abc",
             "packages": [
-                "."
+                ".",
+                "middleware"
             ]
         },
         {
@@ -14,8 +40,20 @@
             "version": "v0.2.0",
             "revision": "9cedb429ffbe71a32a3ae7c65fd109cb7ae07804",
             "packages": [
+                "bytes",
                 "color",
-                "log"
+                "log",
+                "random"
+            ]
+        },
+        {
+            "name": "github.com/lib/pq",
+            "branch": "master",
+            "revision": "2704adc878c21e1329f46f6e56a1c387d788ff94",
+            "packages": [
+                ".",
+                "hstore",
+                "oid"
             ]
         },
         {

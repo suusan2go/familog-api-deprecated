@@ -7,10 +7,10 @@ import (
 // Diary Model
 type Diary struct {
 	ID        uint      `gorm:"primary_key" json:"id"`
-	Title     string    `json:"title"`
-	Body      string    `json:"body"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	Title     string    `gorm:"not null" json:"title"`
+	Body      string    `gorm:"not null" json:"body"`
+	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
+	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
 }
 
 // Diaries slice

@@ -16,7 +16,8 @@ type DB struct {
 
 // InitDB intialize database connection
 func InitDB() *DB {
-	db, err := gorm.Open("postgres", "host=localhost user=postgres dbname=QuizMaster_development sslmode=disable password=password")
+	db, err := gorm.Open("postgres", "host=localhost user=postgres dbname=familog_development sslmode=disable password=password")
+	db.LogMode(true)
 	if err != nil {
 		panic("failed to connect database")
 	}

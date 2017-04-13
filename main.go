@@ -1,25 +1,12 @@
 package main
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/suzan2go/familog-api/handler"
 	"github.com/suzan2go/familog-api/model"
 	"net/http"
 )
-
-// ApplicationContext Context for this App
-type ApplicationContext struct {
-	DatabaseConnection *gorm.DB
-	echo.Context
-}
-
-// AppError Error struct
-type AppError struct {
-	code int
-	msg  string
-}
 
 // Map Generic Map
 type Map map[string]interface{}
@@ -61,17 +48,19 @@ ERROR:
 }
 
 func main() {
-	e := echo.New()
-	e.Debug = true
 	db := model.InitDB()
 	db.Migration()
-	// middleware setting
+	e := echo.New()
+	e.Debug = true
 	e.HTTPErrorHandler = JSONErrorHandler
+	// middleware setting
 	e.Use(middleware.Logger())
 	h := &handler.Handler{DB: db}
 
 	// routing
-	e.GET("/", h.DiaryIndex)
+	e.POST("/device", h.PostDevice)
+	e.POST("/session", h.PostSession)
+	e.GET("/diaries", h.DiaryIndex, h.Authenticate)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

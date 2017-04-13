@@ -7,7 +7,7 @@ import (
 )
 
 // DiaryIndex return DiaryIndex json
-func (h Handler) DiaryIndex(c echo.Context) error {
+func (h *Handler) DiaryIndex(c echo.Context) error {
 	diaries, err := h.DB.AllDiaries()
 	if err != nil {
 		return err

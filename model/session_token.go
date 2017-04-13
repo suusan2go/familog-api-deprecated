@@ -14,6 +14,12 @@ type SessionToken struct {
 	ExpiresAt time.Time `gorm:"not null" json:"expiresAt"`
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
+	User      User      `json:"-"`
+}
+
+// IsValid valid token
+func (s SessionToken) IsValid() bool {
+	return s.ExpiresAt.After(time.Now())
 }
 
 // GenerateOrExtendSessionToken generate session token
@@ -44,4 +50,13 @@ func generateRandomToken() string {
 		panic(err)
 	}
 	return base32.StdEncoding.EncodeToString(randomBytes)[:length]
+}
+
+// FindSessionToken find session token
+func (db *DB) FindSessionToken(token string) (*SessionToken, error) {
+	sessionToken := &SessionToken{}
+	if err := db.Where("session_tokens.token = ?", token).Preload("User").First(&sessionToken).Error; err != nil {
+		return nil, err
+	}
+	return sessionToken, nil
 }

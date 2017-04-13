@@ -7,7 +7,7 @@ import (
 )
 
 // PostSession return DiaryIndex json
-func (h Handler) PostSession(c echo.Context) error {
+func (h *Handler) PostSession(c echo.Context) error {
 	user, err := h.DB.FindUserByDeviceToken(c.FormValue("deviceToken"))
 	if err != nil {
 		return err

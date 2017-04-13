@@ -20,3 +20,14 @@ func (db *DB) FindUserByDeviceToken(deviceToken string) (*User, error) {
 	}
 	return user, nil
 }
+
+// FindUserBySessionToken find or create device
+func (db *DB) FindUserBySessionToken(sessionToken string) (*User, error) {
+	user := &User{}
+	if err := db.Joins("JOIN session_tokens ON session_tokens.user_id = users.id").
+		Where("session_tokens.Token = ? AND session_tokens.expires_at > ?", sessionToken, time.Now()).
+		First(user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
+}

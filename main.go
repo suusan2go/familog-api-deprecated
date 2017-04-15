@@ -62,6 +62,7 @@ func main() {
 	e.POST("/session", h.PostSession)
 	e.POST("/diaries", h.PostDiary, h.Authenticate)
 	e.GET("/diaries", h.DiaryIndex, h.Authenticate)
+	e.POST("/diaries/:id/diary_entries", h.PostDiaryEntry, h.Authenticate)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

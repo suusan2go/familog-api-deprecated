@@ -47,13 +47,13 @@ func (db *DB) AllDiaries(user *User) (*Diaries, error) {
 // FindDiary find diary of id
 func (db *DB) FindDiary(id string, user *User) (*Diary, error) {
 	diary := &Diary{}
-	if err := db.usersDiary(user).Find(&diary, id).Error; err != nil {
+	if err := db.usersDiary(user).Find(&diary, "diaries.id = ?", id).Error; err != nil {
 		return nil, err
 	}
 	return diary, nil
 }
 
 func (db *DB) usersDiary(user *User) *gorm.DB {
-	return db.Joins("JON diary_subscribers on diary_subscribers.diary_id = diaries.id").
+	return db.Joins("JOIN diary_subscribers on diary_subscribers.diary_id = diaries.id").
 		Where("diary_subscribers.user_id = ?", user.ID)
 }

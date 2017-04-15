@@ -6,4 +6,5 @@ func (db *DB) Migration() {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Device{})
 	db.AutoMigrate(&SessionToken{})
+	db.AutoMigrate(&DiarySubscriber{})
 }

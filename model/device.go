@@ -8,7 +8,7 @@ import (
 type Device struct {
 	ID        uint      `gorm:"primary_key" json:"id"`
 	Token     string    `gorm:"not null" json:"deviceToken"`
-	UserID    int       `gorm:"not null;index" json:"userId"`
+	UserID    uint      `gorm:"not null;index" json:"userId"`
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
 	User      User

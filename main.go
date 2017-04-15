@@ -60,6 +60,7 @@ func main() {
 	// routing
 	e.POST("/device", h.PostDevice)
 	e.POST("/session", h.PostSession)
+	e.POST("/diaries", h.PostDiary, h.Authenticate)
 	e.GET("/diaries", h.DiaryIndex, h.Authenticate)
 
 	e.Logger.Fatal(e.Start(":1323"))

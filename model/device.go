@@ -11,7 +11,7 @@ type Device struct {
 	UserID    uint      `gorm:"not null;index" json:"userId"`
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
-	User      User
+	User      User      `json:"-"`
 }
 
 // FindOrCreateDeviceByToken find or create device
@@ -21,14 +21,13 @@ func (db *DB) FindOrCreateDeviceByToken(deviceToken string) (*Device, error) {
 		return nil, err
 	}
 	if device.UserID == 0 {
-		user := &User{
-			Devices: []Device{
-				{Token: deviceToken},
-			},
-		}
+		user := &User{}
 		if err := db.Create(user).Error; err != nil {
 			return nil, err
 		}
+		device.UserID = user.ID
+		device.Token = deviceToken
+		db.Create(device)
 	}
 	return device, nil
 }

@@ -63,6 +63,7 @@ func main() {
 	e.POST("/diaries", h.PostDiary, h.Authenticate)
 	e.GET("/diaries", h.DiaryIndex, h.Authenticate)
 	e.POST("/diaries/:id/diary_entries", h.PostDiaryEntry, h.Authenticate)
+	e.PATCH("/diary_entries/:id", h.PatchDiaryEntry, h.Authenticate)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

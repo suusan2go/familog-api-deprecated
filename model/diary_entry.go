@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -25,5 +26,38 @@ func (db *DB) CreateDiaryEntry(
 	if err := db.Create(diaryEntry).Error; err != nil {
 		return nil, err
 	}
+	diaryEntry.User = *user
 	return diaryEntry, nil
+}
+
+// UpdateDiaryEntry update user related diary
+func (db *DB) UpdateDiaryEntry(
+	user *User, id string, title string, body string, emoji string,
+) (*DiaryEntry, error) {
+	diaryEntry := &DiaryEntry{}
+	if err := db.myDiaryScope(user).Find(diaryEntry, "diary_entries.id = ?", id).Error; err != nil {
+		return nil, err
+	}
+	diaryEntry.Title = title
+	diaryEntry.Body = body
+	diaryEntry.Emoji = emoji
+	if err := db.Save(diaryEntry).Error; err != nil {
+		return nil, err
+	}
+	return diaryEntry, nil
+}
+
+// FindMyDiaryEntry find my diary entry
+func (db *DB) FindMyDiaryEntry(id string, user *User) (*DiaryEntry, error) {
+	diaryEntry := &DiaryEntry{}
+	if err := db.myDiaryEntryScope(user).Preload("User").
+		Find(diaryEntry, "diary_entries.id = ?", id).
+		Error; err != nil {
+		return nil, err
+	}
+	return diaryEntry, nil
+}
+
+func (db *DB) myDiaryEntryScope(user *User) *gorm.DB {
+	return db.Where("diary_entries.user_id = ?", user.ID)
 }

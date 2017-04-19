@@ -1,15 +1,14 @@
 package model
 
 import (
-	"crypto/rand"
-	"encoding/base32"
+	"github.com/suzan2go/familog-api/util"
 	"time"
 )
 
 // SessionToken model
 type SessionToken struct {
 	ID        uint      `gorm:"primary_key" json:"id"`
-	UserID    int       `gorm:"not null;index" json:"userId"`
+	UserID    uint      `gorm:"not null;index" json:"userId"`
 	Token     string    `gorm:"not null;unique_index" json:"token"`
 	ExpiresAt time.Time `gorm:"not null" json:"expiresAt"`
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
@@ -33,23 +32,13 @@ func (db *DB) GenerateOrExtendSessionToken(user *User) (*SessionToken, error) {
 	if db.NewRecord(sessionToken) == false {
 		return sessionToken, nil
 	}
-	sessionToken.Token = generateRandomToken()
-	sessionToken.UserID = int(user.ID)
+	sessionToken.Token = util.GenerateRandomToken(32)
+	sessionToken.UserID = user.ID
 	sessionToken.ExpiresAt = time.Now().AddDate(0, 1, 0)
 	if err := db.Create(&sessionToken).Error; err != nil {
 		return nil, err
 	}
 	return sessionToken, nil
-}
-
-func generateRandomToken() string {
-	const length = 32
-	randomBytes := make([]byte, 32)
-	_, err := rand.Read(randomBytes)
-	if err != nil {
-		panic(err)
-	}
-	return base32.StdEncoding.EncodeToString(randomBytes)[:length]
 }
 
 // FindSessionToken find session token

@@ -8,4 +8,5 @@ func (db *DB) Migration() {
 	db.AutoMigrate(&SessionToken{})
 	db.AutoMigrate(&DiarySubscriber{})
 	db.AutoMigrate(&DiaryEntry{})
+	db.AutoMigrate(&DiaryEntryImage{})
 }

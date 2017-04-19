@@ -1,5 +1,5 @@
 {
-    "memo": "9e84fe4bbbc2989a9054baf342b22c3e901474ccecec63bc85d05f282d0cde14",
+    "memo": "4aa0823b65386e03899c84189fc2d5c8587ec2416b04a61ca1733fed53299f1f",
     "projects": [
         {
             "name": "github.com/dgrijalva/jwt-go",
@@ -70,6 +70,18 @@
             "revision": "fc9e8d8ef48496124e79ae0df75490096eccf6fe",
             "packages": [
                 "."
+            ]
+        },
+        {
+            "name": "github.com/minio/minio-go",
+            "version": "v2.0.4",
+            "revision": "dcaae9ec4d0b0a81d17f22f6d7a186491f6a55ec",
+            "packages": [
+                ".",
+                "pkg/policy",
+                "pkg/s3signer",
+                "pkg/s3utils",
+                "pkg/set"
             ]
         },
         {

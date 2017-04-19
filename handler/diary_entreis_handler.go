@@ -1,9 +1,11 @@
 package handler
 
 import (
-	"net/http"
-
+	"bytes"
+	"encoding/json"
 	"github.com/labstack/echo"
+	"mime/multipart"
+	"net/http"
 )
 
 // PostDiaryEntry Create diary_entry
@@ -12,17 +14,31 @@ func (h *Handler) PostDiaryEntry(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+	file1, _ := c.FormFile("image1")
+	file2, _ := c.FormFile("image2")
+	file3, _ := c.FormFile("image3")
+	images := []*multipart.FileHeader{
+		file1,
+		file2,
+		file3,
+	}
 	diaryEntry, err := h.DB.CreateDiaryEntry(
 		h.CurrentUser,
 		diary,
 		c.FormValue("title"),
 		c.FormValue("body"),
 		c.FormValue("emoji"),
+		images,
 	)
+
 	if err != nil {
 		return err
 	}
-	return c.JSON(http.StatusOK, diaryEntry)
+	buf := new(bytes.Buffer)
+	enc := json.NewEncoder(buf)
+	enc.SetEscapeHTML(false)
+	_ = enc.Encode(diaryEntry)
+	return c.JSONBlob(http.StatusOK, buf.Bytes())
 }
 
 // PatchDiaryEntry Create diary
@@ -37,5 +53,9 @@ func (h *Handler) PatchDiaryEntry(c echo.Context) error {
 	if err := h.DB.Save(diaryEntry).Error; err != nil {
 		return err
 	}
+	buf := new(bytes.Buffer)
+	enc := json.NewEncoder(buf)
+	enc.SetEscapeHTML(false)
+	_ = enc.Encode(diaryEntry)
 	return c.JSON(http.StatusOK, diaryEntry)
 }

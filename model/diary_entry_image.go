@@ -3,7 +3,6 @@ package model
 import (
 	"github.com/suzan2go/familog-api/uploader"
 	"github.com/suzan2go/familog-api/util"
-	"log"
 	"mime/multipart"
 	"path/filepath"
 	"strconv"
@@ -15,7 +14,7 @@ type DiaryEntryImage struct {
 	ID           uint      `gorm:"primary_key" json:"id"`
 	DiaryEntryID uint      `gorm:"not null;index" json:"diaryEntryId"`
 	FilePath     string    `gorm:"not null" json:"-"`
-	FileURL      string    `json:"fileUrl"`
+	FileURL      string    `gorm:"-" json:"fileUrl"`
 	CreatedAt    time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt    time.Time `gorm:"not null" json:"updatedAt"`
 }
@@ -32,6 +31,25 @@ func (db *DB) CreateDiaryEntryImage(file *multipart.FileHeader, diaryEntry *Diar
 		return nil, err
 	}
 	return diaryEntryImage, nil
+}
+
+// UpdateDiaryEntryImage create diary entry images
+func (db *DB) UpdateDiaryEntryImage(file *multipart.FileHeader, diaryEntryImage *DiaryEntryImage) error {
+	originalDiaryEntryImage := *diaryEntryImage
+	filePath := filepath.Join("diary_entry_images",
+		strconv.Itoa(int(diaryEntryImage.DiaryEntryID)),
+		util.GenerateRandomToken(16)+filepath.Ext(file.Filename),
+	)
+	diaryEntryImage.DeleteFile()
+	diaryEntryImage.FilePath = filePath
+	if err := db.Save(diaryEntryImage).Error; err != nil {
+		return err
+	}
+	if err := diaryEntryImage.UploadFile(file); err != nil {
+		return err
+	}
+	originalDiaryEntryImage.DeleteFile()
+	return nil
 }
 
 // DeleteDiaryEntryImage delete uploaded file and database
@@ -63,8 +81,7 @@ func (image *DiaryEntryImage) UploadFile(file *multipart.FileHeader) error {
 // DeleteFile uploaded file
 func (image *DiaryEntryImage) DeleteFile() error {
 	uploader := uploader.InitUploader()
-	err := uploader.DeleteImage(image.FilePath)
-	if err != nil {
+	if err := uploader.DeleteImage(image.FilePath); err != nil {
 		return err
 	}
 	return nil
@@ -78,6 +95,5 @@ func (image *DiaryEntryImage) AfterFind() (err error) {
 		return err
 	}
 	image.FileURL = url.String()
-	log.Printf(image.FileURL)
 	return
 }

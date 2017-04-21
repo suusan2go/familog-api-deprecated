@@ -64,6 +64,8 @@ func main() {
 	e.GET("/diaries", h.DiaryIndex, h.Authenticate)
 	e.POST("/diaries/:id/diary_entries", h.PostDiaryEntry, h.Authenticate)
 	e.PATCH("/diary_entries/:id", h.PatchDiaryEntry, h.Authenticate)
+	e.PATCH("/diary_entries/:diary_entry_id/images/:id", h.PatchDiaryEntryImage, h.Authenticate)
+	e.DELETE("/diary_entries/:diary_entry_id/images/:id", h.DeleteDiaryEntryImage, h.Authenticate)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

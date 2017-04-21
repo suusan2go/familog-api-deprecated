@@ -51,7 +51,10 @@ func (u *Uploader) GetImageURL(filepath string) (*url.URL, error) {
 }
 
 // DeleteImage delete image from bucket
-func (u *Uploader) DeleteImage(filepath string) error {
+func (u *Uploader) DeleteImage(path string) error {
+	if err := u.RemoveObject(u.Config.BucketName, path); err != nil {
+		return err
+	}
 	return nil
 }
 

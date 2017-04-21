@@ -72,6 +72,21 @@ func (db *DB) FindMyDiaryEntry(id string, user *User) (*DiaryEntry, error) {
 	return diaryEntry, nil
 }
 
+// FindMyDiaryEntryImage find my diary entry
+func (db *DB) FindMyDiaryEntryImage(diaryEntryID string, diaryEntryImageID string, user *User) (
+	*DiaryEntryImage, error) {
+	diaryEntry, err := db.FindMyDiaryEntry(diaryEntryID, user)
+	if err != nil {
+		return nil, err
+	}
+	diaryEntryImage := &DiaryEntryImage{}
+	if err := db.Where("diary_entry_images.diary_entry_id = ?", diaryEntry.ID).
+		Find(diaryEntryImage, "diary_entry_images.id = ?", diaryEntryImageID).Error; err != nil {
+		return nil, err
+	}
+	return diaryEntryImage, nil
+}
+
 func (db *DB) myDiaryEntryScope(user *User) *gorm.DB {
 	return db.Where("diary_entries.user_id = ?", user.ID)
 }

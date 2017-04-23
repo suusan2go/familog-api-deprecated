@@ -19,6 +19,7 @@ make_task_def(){
 			"portMappings": [
 				{
 					"containerPort": 8080,
+					"protocol": "tcp"
 				}
 			]
 		}

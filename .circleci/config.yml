@@ -1,0 +1,70 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # using custom image, see .circleci/images/primary/Dockerfile
+      - image: golang:1.8.1
+      - image: postgres:9.6.1-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: familog_development
+          POSTGRES_PASSWORD: password
+
+    working_directory: /go/src/github.com/suzan2go/familog-api
+
+    environment:
+      TEST_RESULTS: /tmp/test-results
+
+    steps:
+      - checkout
+
+      - run: mkdir -p $TEST_RESULTS
+
+      - run: go get -u github.com/golang/dep/...
+
+      - run: dep ensure
+
+      # Normally, this step would be in a custom primary image;
+      # we've added it here for the sake of explanation.
+      - run: go get github.com/jstemmer/go-junit-report
+
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+      # - run:
+      #     name: Run unit tests
+      #     environment:
+      #       CONTACTS_DB_URL: "postgres://ubuntu@localhost:5432/contacts?sslmode=disable"
+      #       CONTACTS_DB_MIGRATIONS: /go/src/github.com/circleci/cci-demo-go/db/migrations
+      #     command: |
+      #       trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
+      #       make test | tee ${TEST_RESULTS}/go-test.out
+      # - run: make
+
+      - run:
+          name: Start service
+          environment:
+            DB_NAME: familog_development
+            DB_HOST: postgres
+            DB_USER: postgres
+            DB_PASSWORD: password
+          command: go run main.go
+          background: true
+
+      - run:
+          name: Validate service is working
+          command: curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080
+
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: raw-test-output
+
+      - store_test_results:
+          path: /tmp/test-results

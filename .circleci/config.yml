@@ -72,9 +72,20 @@ jobs:
       - store_test_results:
           path: /tmp/test-results
 
+      - setup_remote_docker
+
       - deploy:
           name: Build Docker image and deploy to ECS
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              # install docker
+              set -x
+              VER="17.03.0-ce"
+              curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+              tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+              mv /tmp/docker/* /usr/bin
+              # install awscli
+              apt-get update && apt-get install -y awscli jq
+              # deploy
               .circleci/script/deploy.sh
             fi

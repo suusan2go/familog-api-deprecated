@@ -21,7 +21,14 @@ make_task_def(){
 					"containerPort": 8080,
 					"protocol": "tcp"
 				}
-			]
+			],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "familog-production",
+          "awslogs-region": "ap-northeast-1"
+        }
+      }
 		}
 	]'
 

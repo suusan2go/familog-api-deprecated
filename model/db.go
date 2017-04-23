@@ -3,6 +3,7 @@ package model
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" // for grom
+	"os"
 )
 
 // DataStore implement database access func
@@ -16,7 +17,11 @@ type DB struct {
 
 // InitDB intialize database connection
 func InitDB() *DB {
-	db, err := gorm.Open("postgres", "host=localhost user=postgres dbname=familog_development sslmode=disable password=password")
+	dbname := os.Getenv("DB_NAME")
+	host := os.Getenv("DB_HOST")
+	password := os.Getenv("DB_PASSWORD")
+	user := os.Getenv("DB_USER")
+	db, err := gorm.Open("postgres", "host="+host+" user="+user+" dbname="+dbname+" sslmode=disable password="+password)
 	db.LogMode(true)
 	if err != nil {
 		panic("failed to connect database")

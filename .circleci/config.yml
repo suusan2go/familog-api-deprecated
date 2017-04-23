@@ -54,7 +54,7 @@ jobs:
           name: Start service
           environment:
             DB_NAME: familog_development
-            DB_HOST: postgres
+            DB_HOST: localhost
             DB_USER: postgres
             DB_PASSWORD: password
           command: go run main.go

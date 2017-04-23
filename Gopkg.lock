@@ -1,0 +1,85 @@
+memo = "4aa0823b65386e03899c84189fc2d5c8587ec2416b04a61ca1733fed53299f1f"
+
+[[projects]]
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  revision = "d2709f9f1f31ebcda9651b03077758c1f3a0018c"
+  version = "v3.0.0"
+
+[[projects]]
+  name = "github.com/jinzhu/gorm"
+  packages = [".","dialects/postgres"]
+  revision = "5174cc5c242a728b435ea2be8a2f7f998e15429b"
+  version = "v1.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  revision = "1c35d901db3da928c72a72d8458480cc9ade058f"
+
+[[projects]]
+  name = "github.com/labstack/echo"
+  packages = [".","middleware"]
+  revision = "8d504c1b699c757b267255c53b3e5219f9974abc"
+  version = "v3.0.3"
+
+[[projects]]
+  name = "github.com/labstack/gommon"
+  packages = ["bytes","color","log","random"]
+  revision = "9cedb429ffbe71a32a3ae7c65fd109cb7ae07804"
+  version = "v0.2.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/lib/pq"
+  packages = [".","hstore","oid"]
+  revision = "2704adc878c21e1329f46f6e56a1c387d788ff94"
+
+[[projects]]
+  name = "github.com/mattn/go-colorable"
+  packages = ["."]
+  revision = "d228849504861217f796da67fae4f6e347643f15"
+  version = "v0.0.7"
+
+[[projects]]
+  name = "github.com/mattn/go-isatty"
+  packages = ["."]
+  revision = "fc9e8d8ef48496124e79ae0df75490096eccf6fe"
+  version = "v0.0.2"
+
+[[projects]]
+  name = "github.com/minio/minio-go"
+  packages = [".","pkg/policy","pkg/s3signer","pkg/s3utils","pkg/set"]
+  revision = "dcaae9ec4d0b0a81d17f22f6d7a186491f6a55ec"
+  version = "v2.0.4"
+
+[[projects]]
+  name = "github.com/tylerb/graceful"
+  packages = ["."]
+  revision = "4654dfbb6ad53cb5e27f37d99b02e16c1872fbbb"
+  version = "v1.2.15"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/valyala/bytebufferpool"
+  packages = ["."]
+  revision = "e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/valyala/fasttemplate"
+  packages = ["."]
+  revision = "dcecefd839c4193db0d35b88ec65b4c12d360ab0"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["acme","acme/autocert"]
+  revision = "96846453c37f0876340a66a47f3f75b1f3a6cd2d"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix"]
+  revision = "ea9bcade75cb975a0b9738936568ab388b845617"

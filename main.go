@@ -67,5 +67,5 @@ func main() {
 	e.PATCH("/diary_entries/:diary_entry_id/images/:id", h.PatchDiaryEntryImage, h.Authenticate)
 	e.DELETE("/diary_entries/:diary_entry_id/images/:id", h.DeleteDiaryEntryImage, h.Authenticate)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":8080"))
 }

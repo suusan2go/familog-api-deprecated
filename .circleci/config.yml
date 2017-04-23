@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # using custom image, see .circleci/images/primary/Dockerfile
-      - image: golang:1.8.1
+      - image: golang:1.8.1-stretch
       - image: postgres:9.6.1-alpine
         environment:
           POSTGRES_USER: postgres

@@ -1,0 +1,22 @@
+version: "3"
+services:
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: password
+    image: postgres:9.6.1-alpine
+    ports:
+      - "5432:5432"
+  go:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    env_file: .env
+    command: go run main.go
+    volumes:
+      - .:/go/src/github.com/suzan2go/familog-api
+    ports:
+      - "8080:8080"
+    tty: true
+    stdin_open: true
+    links:
+      - postgres

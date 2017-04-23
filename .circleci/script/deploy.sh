@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # valiabls
-AWS_DEFAULT_REGION=ap-north-east1
+AWS_DEFAULT_REGION=ap-northeast-1
 AWS_ECS_TASKDEF_NAME=familog-production
 AWS_ECS_CLUSTER_NAME=familog-production
 AWS_ECS_SERVICE_NAME=familog-production

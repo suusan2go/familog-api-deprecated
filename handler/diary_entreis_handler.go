@@ -3,14 +3,16 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/labstack/echo"
 	"mime/multipart"
 	"net/http"
+
+	"github.com/labstack/echo"
 )
 
 // PostDiaryEntry Create diary_entry
 func (h *Handler) PostDiaryEntry(c echo.Context) error {
-	diary, err := h.DB.FindDiary(c.Param("id"), h.CurrentUser)
+	ac := c.(*AuthenticatedContext)
+	diary, err := h.DB.FindDiary(c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}
@@ -23,7 +25,7 @@ func (h *Handler) PostDiaryEntry(c echo.Context) error {
 		file3,
 	}
 	diaryEntry, err := h.DB.CreateDiaryEntry(
-		h.CurrentUser,
+		&ac.CurrentUser,
 		diary,
 		c.FormValue("title"),
 		c.FormValue("body"),
@@ -43,7 +45,8 @@ func (h *Handler) PostDiaryEntry(c echo.Context) error {
 
 // PatchDiaryEntry Create diary
 func (h *Handler) PatchDiaryEntry(c echo.Context) error {
-	diaryEntry, err := h.DB.FindMyDiaryEntry(c.Param("id"), h.CurrentUser)
+	ac := c.(*AuthenticatedContext)
+	diaryEntry, err := h.DB.FindMyDiaryEntry(c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}

@@ -1,15 +1,21 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/labstack/echo"
 	"github.com/suzan2go/familog-api/model"
-	"net/http"
 )
 
 // Handler Handle Http Request
 type Handler struct {
-	DB          *model.DB
-	CurrentUser *model.User
+	DB *model.DB
+}
+
+// AuthenticatedContext include CurrentUser
+type AuthenticatedContext struct {
+	echo.Context
+	CurrentUser model.User
 }
 
 // Authenticate and Set CurrentUser
@@ -23,7 +29,7 @@ func (h *Handler) Authenticate(next echo.HandlerFunc) echo.HandlerFunc {
 		if !sessionToken.IsValid() {
 			return echo.NewHTTPError(http.StatusForbidden, "This token is expired")
 		}
-		h.CurrentUser = &(sessionToken.User)
-		return next(c)
+		ac := &AuthenticatedContext{c, sessionToken.User}
+		return next(ac)
 	}
 }

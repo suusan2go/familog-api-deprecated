@@ -3,14 +3,16 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/labstack/echo"
 	"net/http"
+
+	"github.com/labstack/echo"
 )
 
 // PatchDiaryEntryImage Create diary
 func (h *Handler) PatchDiaryEntryImage(c echo.Context) error {
+	ac := c.(*AuthenticatedContext)
 	diaryEntryImage, err := h.DB.FindMyDiaryEntryImage(
-		c.Param("diary_entry_id"), c.Param("id"), h.CurrentUser)
+		c.Param("diary_entry_id"), c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}
@@ -27,8 +29,9 @@ func (h *Handler) PatchDiaryEntryImage(c echo.Context) error {
 
 // DeleteDiaryEntryImage Create diary
 func (h *Handler) DeleteDiaryEntryImage(c echo.Context) error {
+	ac := c.(*AuthenticatedContext)
 	diaryEntryImage, err := h.DB.FindMyDiaryEntryImage(
-		c.Param("diary_entry_id"), c.Param("id"), h.CurrentUser)
+		c.Param("diary_entry_id"), c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}

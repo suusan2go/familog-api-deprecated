@@ -3,6 +3,7 @@ services:
   postgres:
     environment:
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: familog_development
     image: postgres:9.6.1-alpine
     ports:
       - "5432:5432"

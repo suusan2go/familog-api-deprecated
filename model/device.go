@@ -25,6 +25,7 @@ func (db *DB) FindOrCreateDeviceByToken(deviceToken string) (*Device, error) {
 		if err := db.Create(user).Error; err != nil {
 			return nil, err
 		}
+		device.User = *user
 		device.UserID = user.ID
 		device.Token = deviceToken
 		db.Create(device)

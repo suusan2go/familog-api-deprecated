@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/suzan2go/familog-api/util"
 	"testing"
 )
 
@@ -9,7 +10,7 @@ func TestFindOrCreateDeviceByToken(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("devices")
 
-	deviceToken := "hogehoge"
+	deviceToken := util.GenerateRandomToken(32)
 	var initialCount int
 	var afterCount int
 	db.Table("devices").Count(&initialCount)
@@ -37,5 +38,4 @@ func TestFindOrCreateDeviceByToken(t *testing.T) {
 	if initialCount-afterCount != 0 {
 		t.Error("devices created")
 	}
-
 }

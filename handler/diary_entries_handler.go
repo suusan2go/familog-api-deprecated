@@ -50,10 +50,13 @@ func (h *Handler) PatchDiaryEntry(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	diaryEntry.Title = c.FormValue("title")
-	diaryEntry.Body = c.FormValue("body")
-	diaryEntry.Emoji = c.FormValue("emoji")
-	if err := h.DB.Save(diaryEntry).Error; err != nil {
+	if err := h.DB.UpdateDiaryEntry(
+		&ac.CurrentUser,
+		diaryEntry,
+		c.FormValue("title"),
+		c.FormValue("body"),
+		c.FormValue("emoji"),
+	); err != nil {
 		return err
 	}
 	buf := new(bytes.Buffer)

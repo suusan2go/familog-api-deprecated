@@ -46,19 +46,15 @@ func (db *DB) CreateDiaryEntry(
 
 // UpdateDiaryEntry update user related diary
 func (db *DB) UpdateDiaryEntry(
-	user *User, id string, title string, body string, emoji string,
-) (*DiaryEntry, error) {
-	diaryEntry := &DiaryEntry{}
-	if err := db.myDiaryScope(user).Find(diaryEntry, "diary_entries.id = ?", id).Error; err != nil {
-		return nil, err
-	}
+	user *User, diaryEntry *DiaryEntry, title string, body string, emoji string,
+) error {
 	diaryEntry.Title = title
 	diaryEntry.Body = body
 	diaryEntry.Emoji = emoji
 	if err := db.Save(diaryEntry).Error; err != nil {
-		return nil, err
+		return err
 	}
-	return diaryEntry, nil
+	return nil
 }
 
 // FindMyDiaryEntry find my diary entry

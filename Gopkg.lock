@@ -1,4 +1,10 @@
-memo = "4aa0823b65386e03899c84189fc2d5c8587ec2416b04a61ca1733fed53299f1f"
+memo = "97f7913ec2f53f649adcd7ddea4e0adb4b3bc6e727a164e45f8455a5ed5d7b97"
+
+[[projects]]
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
@@ -53,6 +59,18 @@ memo = "4aa0823b65386e03899c84189fc2d5c8587ec2416b04a61ca1733fed53299f1f"
   packages = [".","pkg/policy","pkg/s3signer","pkg/s3utils","pkg/set"]
   revision = "dcaae9ec4d0b0a81d17f22f6d7a186491f6a55ec"
   version = "v2.0.4"
+
+[[projects]]
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/stretchr/testify"
+  packages = ["assert"]
+  revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
+  version = "v1.1.4"
 
 [[projects]]
   name = "github.com/tylerb/graceful"

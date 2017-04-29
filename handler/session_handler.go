@@ -1,14 +1,21 @@
 package handler
 
 import (
-	"net/http"
-
 	"github.com/labstack/echo"
+	"net/http"
 )
+
+type sessionHandlerPostRequest struct {
+	DeviceToken string
+}
 
 // PostSession return DiaryIndex json
 func (h *Handler) PostSession(c echo.Context) error {
-	user, err := h.DB.FindUserByDeviceToken(c.FormValue("deviceToken"))
+	r := &sessionHandlerPostRequest{}
+	if err := c.Bind(r); err != nil {
+		return err
+	}
+	user, err := h.DB.FindUserByDeviceToken(r.DeviceToken)
 	if err != nil {
 		return err
 	}
@@ -16,5 +23,5 @@ func (h *Handler) PostSession(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return c.JSON(http.StatusOK, sessionToken)
+	return c.JSON(http.StatusCreated, sessionToken)
 }

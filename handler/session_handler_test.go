@@ -26,7 +26,7 @@ func TestPostSession(t *testing.T) {
 	// middleware setting
 	e.Use(middleware.Logger())
 	// set form value
-	requestBody, _ := json.Marshal(&deviceHandlerRequest{DeviceToken: deviceToken})
+	requestBody, _ := json.Marshal(&sessionHandlerPostRequest{DeviceToken: deviceToken})
 	req, err := http.NewRequest(
 		echo.POST,
 		"/session",

@@ -1,6 +1,8 @@
 version: "3"
 services:
   postgres:
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: familog_development

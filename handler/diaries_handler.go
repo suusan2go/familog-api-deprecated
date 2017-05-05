@@ -6,6 +6,10 @@ import (
 	"github.com/labstack/echo"
 )
 
+type diariesHandlerPostRequest struct {
+	Title string
+}
+
 // DiaryIndex return DiaryIndex json
 func (h *Handler) DiaryIndex(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
@@ -19,7 +23,11 @@ func (h *Handler) DiaryIndex(c echo.Context) error {
 // PostDiary Create diary
 func (h *Handler) PostDiary(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	diary, err := h.DB.CreateDiary(&ac.CurrentUser, c.FormValue("title"))
+	r := &diariesHandlerPostRequest{}
+	if err := c.Bind(r); err != nil {
+		return err
+	}
+	diary, err := h.DB.CreateDiary(&ac.CurrentUser, r.Title)
 	if err != nil {
 		return err
 	}

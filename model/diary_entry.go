@@ -21,6 +21,11 @@ type DiaryEntry struct {
 	DiaryEntryImages []DiaryEntryImage `json:"diaryEntryImages"`
 }
 
+// DiaryEntries diary entries slice
+type DiaryEntries struct {
+	DiaryEntries []DiaryEntry `json:"diary_entries"`
+}
+
 // CreateDiaryEntry create user related diary
 func (db *DB) CreateDiaryEntry(
 	user *User, diary *Diary, title string, body string, emoji string,
@@ -81,6 +86,50 @@ func (db *DB) FindMyDiaryEntryImage(diaryEntryID string, diaryEntryImageID strin
 		return nil, err
 	}
 	return diaryEntryImage, nil
+}
+
+// AllDiaryEntries GetAllDiaryEntries
+func (db *DB) AllDiaryEntries(user *User) (*DiaryEntries, error) {
+	diaryEntries := &DiaryEntries{}
+	if err := db.subscribedDiaryEntryScope(user).
+		Limit(10).
+		Find(&diaryEntries.DiaryEntries).Error; err != nil {
+		return nil, err
+	}
+	return diaryEntries, nil
+}
+
+// MoreOlderDiaryEntries GetAllDiaryEntries id < sinceID
+func (db *DB) MoreOlderDiaryEntries(user *User, sinceID string) (*DiaryEntries, error) {
+	diaryEntries := &DiaryEntries{}
+	if err := db.subscribedDiaryEntryScope(user).
+		Limit(10).
+		Where("diary_entries.id < ?", sinceID).
+		Find(&diaryEntries.DiaryEntries).Error; err != nil {
+		return nil, err
+	}
+	return diaryEntries, nil
+}
+
+// MoreNewerDiaryEntries GetAllDiaryEntries id > maxID
+func (db *DB) MoreNewerDiaryEntries(user *User, maxID string) (*DiaryEntries, error) {
+	diaryEntries := &DiaryEntries{}
+	if err := db.subscribedDiaryEntryScope(user).
+		Limit(10).
+		Where("diary_entries.id > ?", maxID).
+		Find(&diaryEntries.DiaryEntries).Error; err != nil {
+		return nil, err
+	}
+	return diaryEntries, nil
+}
+
+func (db *DB) subscribedDiaryEntryScope(user *User) *gorm.DB {
+	return db.Joins("JOIN diaries on diary_entries.diary_id = diaries.id").
+		Joins("JOIN diary_subscribers on diary_subscribers.diary_id = diaries.id").
+		Preload("User").
+		Preload("DiaryEntryImages").
+		Order("diary_entries.id DESC").
+		Where("diary_subscribers.user_id = ?", user.ID)
 }
 
 func (db *DB) myDiaryEntryScope(user *User) *gorm.DB {

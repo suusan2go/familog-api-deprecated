@@ -7,6 +7,7 @@ import (
 // User User model
 type User struct {
 	ID        uint      `gorm:"primary_key" json:"id"`
+	Name      string    `json:"name"`
 	Devices   []Device  `json:"-"`
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`

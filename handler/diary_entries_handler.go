@@ -69,22 +69,26 @@ func (h *Handler) PatchDiaryEntry(c echo.Context) error {
 // GetDiaryEntries diary entries index
 func (h *Handler) GetDiaryEntries(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
+	diary, e := h.DB.FindDiary(c.Param("id"), &ac.CurrentUser)
+	if e != nil {
+		return e
+	}
 
 	if maxID := c.QueryParam("max_id"); len(maxID) != 0 {
-		diaryEntries, err := h.DB.MoreNewerDiaryEntries(&ac.CurrentUser, maxID)
+		diaryEntries, err := h.DB.MoreNewerDiaryEntries(diary, maxID)
 		if err != nil {
 			return err
 		}
 		return c.JSON(http.StatusOK, diaryEntries)
 	}
 	if sinceID := c.QueryParam("since_id"); len(sinceID) != 0 {
-		diaryEntries, err := h.DB.MoreOlderDiaryEntries(&ac.CurrentUser, sinceID)
+		diaryEntries, err := h.DB.MoreOlderDiaryEntries(diary, sinceID)
 		if err != nil {
 			return err
 		}
 		return c.JSON(http.StatusOK, diaryEntries)
 	}
-	diaryEntries, err := h.DB.AllDiaryEntries(&ac.CurrentUser)
+	diaryEntries, err := h.DB.AllDiaryEntries(diary)
 	if err != nil {
 		return err
 	}

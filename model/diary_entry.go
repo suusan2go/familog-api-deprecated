@@ -23,7 +23,7 @@ type DiaryEntry struct {
 
 // DiaryEntries diary entries slice
 type DiaryEntries struct {
-	DiaryEntries []DiaryEntry `json:"diary_entries"`
+	DiaryEntries []DiaryEntry `json:"diaryEntries"`
 }
 
 // CreateDiaryEntry create user related diary
@@ -89,9 +89,9 @@ func (db *DB) FindMyDiaryEntryImage(diaryEntryID string, diaryEntryImageID strin
 }
 
 // AllDiaryEntries GetAllDiaryEntries
-func (db *DB) AllDiaryEntries(user *User) (*DiaryEntries, error) {
+func (db *DB) AllDiaryEntries(diary *Diary) (*DiaryEntries, error) {
 	diaryEntries := &DiaryEntries{}
-	if err := db.subscribedDiaryEntryScope(user).
+	if err := db.subscribedDiaryEntryScope(diary).
 		Limit(10).
 		Find(&diaryEntries.DiaryEntries).Error; err != nil {
 		return nil, err
@@ -100,9 +100,9 @@ func (db *DB) AllDiaryEntries(user *User) (*DiaryEntries, error) {
 }
 
 // MoreOlderDiaryEntries GetAllDiaryEntries id < sinceID
-func (db *DB) MoreOlderDiaryEntries(user *User, sinceID string) (*DiaryEntries, error) {
+func (db *DB) MoreOlderDiaryEntries(diary *Diary, sinceID string) (*DiaryEntries, error) {
 	diaryEntries := &DiaryEntries{}
-	if err := db.subscribedDiaryEntryScope(user).
+	if err := db.subscribedDiaryEntryScope(diary).
 		Limit(10).
 		Where("diary_entries.id < ?", sinceID).
 		Find(&diaryEntries.DiaryEntries).Error; err != nil {
@@ -112,9 +112,9 @@ func (db *DB) MoreOlderDiaryEntries(user *User, sinceID string) (*DiaryEntries, 
 }
 
 // MoreNewerDiaryEntries GetAllDiaryEntries id > maxID
-func (db *DB) MoreNewerDiaryEntries(user *User, maxID string) (*DiaryEntries, error) {
+func (db *DB) MoreNewerDiaryEntries(diary *Diary, maxID string) (*DiaryEntries, error) {
 	diaryEntries := &DiaryEntries{}
-	if err := db.subscribedDiaryEntryScope(user).
+	if err := db.subscribedDiaryEntryScope(diary).
 		Limit(10).
 		Where("diary_entries.id > ?", maxID).
 		Find(&diaryEntries.DiaryEntries).Error; err != nil {
@@ -123,13 +123,11 @@ func (db *DB) MoreNewerDiaryEntries(user *User, maxID string) (*DiaryEntries, er
 	return diaryEntries, nil
 }
 
-func (db *DB) subscribedDiaryEntryScope(user *User) *gorm.DB {
-	return db.Joins("JOIN diaries on diary_entries.diary_id = diaries.id").
-		Joins("JOIN diary_subscribers on diary_subscribers.diary_id = diaries.id").
-		Preload("User").
-		Preload("DiaryEntryImages").
+func (db *DB) subscribedDiaryEntryScope(diary *Diary) *gorm.DB {
+	return db.Where("diary_entries.diary_id = ?", diary.ID).
 		Order("diary_entries.id DESC").
-		Where("diary_subscribers.user_id = ?", user.ID)
+		Preload("User").
+		Preload("DiaryEntryImages")
 }
 
 func (db *DB) myDiaryEntryScope(user *User) *gorm.DB {

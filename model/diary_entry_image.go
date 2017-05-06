@@ -14,7 +14,7 @@ type DiaryEntryImage struct {
 	ID           uint      `gorm:"primary_key" json:"id"`
 	DiaryEntryID uint      `gorm:"not null;index" json:"diaryEntryId"`
 	FilePath     string    `gorm:"not null" json:"-"`
-	FileURL      string    `gorm:"-" json:"url"`
+	FileURL      string    `gorm:"-" json:"uri"`
 	CreatedAt    time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt    time.Time `gorm:"not null" json:"updatedAt"`
 }

@@ -64,7 +64,7 @@ func main() {
 	e.POST("/diaries", h.PostDiary, h.Authenticate)
 	e.GET("/diaries", h.DiaryIndex, h.Authenticate)
 	e.POST("/diaries/:id/diary_entries", h.PostDiaryEntry, h.Authenticate)
-	e.GET("/diary_entries", h.GetDiaryEntries, h.Authenticate)
+	e.GET("/diaries/:id/diary_entries", h.GetDiaryEntries, h.Authenticate)
 	e.PATCH("/diary_entries/:id", h.PatchDiaryEntry, h.Authenticate)
 	e.PATCH("/diary_entries/:id", h.PatchDiaryEntry, h.Authenticate)
 	e.PATCH("/diary_entries/:diary_entry_id/images/:id", h.PatchDiaryEntryImage, h.Authenticate)

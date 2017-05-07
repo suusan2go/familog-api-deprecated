@@ -91,7 +91,7 @@ func (db *DB) FindMyDiaryEntryImage(diaryEntryID string, diaryEntryImageID strin
 // AllDiaryEntries GetAllDiaryEntries
 func (db *DB) AllDiaryEntries(diary *Diary) (*DiaryEntries, error) {
 	diaryEntries := &DiaryEntries{}
-	if err := db.subscribedDiaryEntryScope(diary).
+	if err := db.diaryScope(diary).
 		Limit(10).
 		Find(&diaryEntries.DiaryEntries).Error; err != nil {
 		return nil, err
@@ -102,7 +102,7 @@ func (db *DB) AllDiaryEntries(diary *Diary) (*DiaryEntries, error) {
 // MoreOlderDiaryEntries GetAllDiaryEntries id < sinceID
 func (db *DB) MoreOlderDiaryEntries(diary *Diary, sinceID string) (*DiaryEntries, error) {
 	diaryEntries := &DiaryEntries{}
-	if err := db.subscribedDiaryEntryScope(diary).
+	if err := db.diaryScope(diary).
 		Limit(10).
 		Where("diary_entries.id < ?", sinceID).
 		Find(&diaryEntries.DiaryEntries).Error; err != nil {
@@ -114,7 +114,7 @@ func (db *DB) MoreOlderDiaryEntries(diary *Diary, sinceID string) (*DiaryEntries
 // MoreNewerDiaryEntries GetAllDiaryEntries id > maxID
 func (db *DB) MoreNewerDiaryEntries(diary *Diary, maxID string) (*DiaryEntries, error) {
 	diaryEntries := &DiaryEntries{}
-	if err := db.subscribedDiaryEntryScope(diary).
+	if err := db.diaryScope(diary).
 		Limit(10).
 		Where("diary_entries.id > ?", maxID).
 		Find(&diaryEntries.DiaryEntries).Error; err != nil {
@@ -123,9 +123,27 @@ func (db *DB) MoreNewerDiaryEntries(diary *Diary, maxID string) (*DiaryEntries, 
 	return diaryEntries, nil
 }
 
-func (db *DB) subscribedDiaryEntryScope(diary *Diary) *gorm.DB {
+// FindDiaryEntry find user subscribed diary entry by id
+func (db *DB) FindDiaryEntry(user *User, ID string) (*DiaryEntry, error) {
+	diaryEntry := &DiaryEntry{}
+	if err := db.subscribedDiaryEntryScope(user).
+		Where("diary_entries.id = ?", ID).
+		First(diaryEntry).Error; err != nil {
+		return nil, err
+	}
+	return diaryEntry, nil
+}
+
+func (db *DB) diaryScope(diary *Diary) *gorm.DB {
 	return db.Where("diary_entries.diary_id = ?", diary.ID).
 		Order("diary_entries.id DESC").
+		Preload("User").
+		Preload("DiaryEntryImages")
+}
+
+func (db *DB) subscribedDiaryEntryScope(user *User) *gorm.DB {
+	return db.Joins("join diary_subscribers on diary_subscribers.diary_id = diary_entries.diary_id").
+		Where("diary_subscribers.user_id = ?", user.ID).
 		Preload("User").
 		Preload("DiaryEntryImages")
 }

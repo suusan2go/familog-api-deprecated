@@ -33,3 +33,11 @@ func (h *Handler) Authenticate(next echo.HandlerFunc) echo.HandlerFunc {
 		return next(ac)
 	}
 }
+
+// GetAppInfo return AppInfo for healthcheck
+func (h *Handler) GetAppInfo(c echo.Context) error {
+	type AppInfo struct {
+		Status string `json:"status"`
+	}
+	return c.JSON(http.StatusOK, &AppInfo{Status: "ok"})
+}

@@ -59,6 +59,7 @@ func main() {
 	h := &handler.Handler{DB: db}
 
 	// routing
+	e.GET("/", h.GetAppInfo)
 	e.POST("/device", h.PostDevice)
 	e.POST("/session", h.PostSession)
 	e.POST("/diaries", h.PostDiary, h.Authenticate)

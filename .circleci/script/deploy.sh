@@ -22,4 +22,4 @@ push_ecr_image(){
 docker build -t $AWS_ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REP_NAME}:$CIRCLE_SHA1 .
 configure_aws_cli
 push_ecr_image
-.circleci/script/ecs-deploy -c $AWS_ECS_CLUSTER_NAME -n $AWS_ECS_SERVICE_NAME -i $AWS_ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REP_NAME}:$CIRCLE_SHA1
+.circleci/script/ecs-deploy -c $AWS_ECS_CLUSTER_NAME -n $AWS_ECS_SERVICE_NAME -i $AWS_ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REP_NAME}:$CIRCLE_SHA1 -t 300

@@ -1,8 +1,9 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 // Diary Model
@@ -22,11 +23,18 @@ type Diaries struct {
 func (db *DB) CreateDiary(user *User, title string) (*Diary, error) {
 	diary := &Diary{Title: title}
 	tx := db.Begin()
-	if err := tx.Create(diary).Error; err != nil {
+	txDB := &DB{tx}
+	if err := txDB.Create(diary).Error; err != nil {
 		tx.Rollback()
 		return nil, err
 	}
-	if err := tx.Create(&DiarySubscriber{UserID: user.ID, DiaryID: diary.ID}).Error; err != nil {
+	// add subscriber
+	if err := txDB.Create(&DiarySubscriber{UserID: user.ID, DiaryID: diary.ID}).Error; err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+	// add invitation
+	if _, err := txDB.CreateDiaryInvitation(diary); err != nil {
 		tx.Rollback()
 		return nil, err
 	}

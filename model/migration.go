@@ -9,4 +9,5 @@ func (db *DB) Migration() {
 	db.AutoMigrate(&DiarySubscriber{})
 	db.AutoMigrate(&DiaryEntry{})
 	db.AutoMigrate(&DiaryEntryImage{})
+	db.AutoMigrate(&DiaryInvitation{})
 }

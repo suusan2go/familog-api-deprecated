@@ -46,3 +46,17 @@ func (db *DB) RecreateDiaryInvitation(diary *Diary) (*DiaryInvitation, error) {
 	}
 	return diaryInvitation, nil
 }
+
+// VerifyDiaryInvitationCode find diary from invitationCode
+func (db *DB) VerifyDiaryInvitationCode(invitationCode string, user User) (*Diary, error) {
+	diary := &Diary{}
+	if err := db.Joins("JOIN diary_invitations on diaries.id = diary_invitations.diary_id").
+		Find(&diary, "diary_invitations.invitation_code = ?", invitationCode).Error; err != nil {
+		return nil, err
+	}
+
+	if err := db.Create(&DiarySubscriber{UserID: user.ID, DiaryID: diary.ID}).Error; err != nil {
+		return nil, err
+	}
+	return diary, nil
+}

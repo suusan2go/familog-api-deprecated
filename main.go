@@ -66,6 +66,7 @@ func main() {
 	e.GET("/diaries", h.DiaryIndex, h.Authenticate)
 	e.GET("/diaries/:id/invitation", h.GetDiaryInvitation, h.Authenticate)
 	e.POST("/diaries/:id/invitation", h.PostDiaryInvitation, h.Authenticate)
+	e.POST("/diary_invitation_verifications", h.PostDiaryInvitationVerification, h.Authenticate)
 	e.POST("/diaries/:id/diary_entries", h.PostDiaryEntry, h.Authenticate)
 	e.GET("/diaries/:id/diary_entries", h.GetDiaryEntries, h.Authenticate)
 	e.GET("/diary_entries/:id", h.GetDiaryEntry, h.Authenticate)

@@ -6,6 +6,10 @@ import (
 	"github.com/labstack/echo"
 )
 
+type diaryInvitationVerificationsPostRequest struct {
+	InvitationCode string
+}
+
 // GetDiaryInvitation return DiaryInvitation Json
 func (h *Handler) GetDiaryInvitation(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
@@ -32,4 +36,18 @@ func (h *Handler) PostDiaryInvitation(c echo.Context) error {
 		return err
 	}
 	return c.JSON(http.StatusOK, diaryInvitation)
+}
+
+// PostDiaryInvitationVerification return DiaryInvitation Json
+func (h *Handler) PostDiaryInvitationVerification(c echo.Context) error {
+	ac := c.(*AuthenticatedContext)
+	r := &diaryInvitationVerificationsPostRequest{}
+	if err := ac.Bind(r); err != nil {
+		return err
+	}
+	diary, err := h.DB.VerifyDiaryInvitationCode(r.InvitationCode, ac.CurrentUser)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, diary)
 }

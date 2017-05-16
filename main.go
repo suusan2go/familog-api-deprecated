@@ -61,6 +61,7 @@ func main() {
 	// routing
 	e.GET("/", h.GetAppInfo) // routing for healthcheck
 	e.POST("/device", h.PostDevice)
+	e.POST("/push_notification_tokens", h.PostPushNotificationToken)
 	e.POST("/session", h.PostSession)
 	e.POST("/diaries", h.PostDiary, h.Authenticate)
 	e.GET("/diaries", h.DiaryIndex, h.Authenticate)

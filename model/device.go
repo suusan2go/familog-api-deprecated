@@ -41,6 +41,8 @@ func (db *DB) SetPushNotificationToken(deviceToken string, pushNotificationToken
 		return nil, err
 	}
 	device.PushNotificationToken = pushNotificationToken
-	db.Update(device)
+	if err := db.Save(device).Error; err != nil {
+		return nil, err
+	}
 	return device, nil
 }

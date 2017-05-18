@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/suzan2go/familog-api/uploader"
+	"github.com/suzan2go/familog-api/lib/uploader"
 	"github.com/suzan2go/familog-api/util"
 	"mime/multipart"
 	"path/filepath"

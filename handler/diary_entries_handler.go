@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/suzan2go/familog-api/service"
 )
 
 // PostDiaryEntry Create diary_entry
@@ -32,8 +33,11 @@ func (h *Handler) PostDiaryEntry(c echo.Context) error {
 		c.FormValue("emoji"),
 		images,
 	)
-
 	if err != nil {
+		return err
+	}
+
+	if err := service.PushNotificationToSubscriver(h.DB, diaryEntry); err != nil {
 		return err
 	}
 	buf := new(bytes.Buffer)

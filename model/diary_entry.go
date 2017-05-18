@@ -1,10 +1,11 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
 	"mime/multipart"
 	"strconv"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 // DiaryEntry Model

@@ -6,19 +6,18 @@ import (
 	"net/http"
 )
 
-const pushEndpointURL = "https://exp.host/--/api/v2/push"
+const pushEndpointURL = "https://exp.host/--/api/v2/push/send"
 
 // NotificationPayload notification parametes
 type NotificationPayload struct {
 	To    string `json:"to"`
-	Title string `json:"title"`
 	Body  string `json:"body"`
 	Badge int    `json:"badge"`
 }
 
 // Push notification to specific user
-func Push(p *NotificationPayload) (*http.Response, error) {
-	payload, err := json.Marshal(p)
+func Push(np []*NotificationPayload) (*http.Response, error) {
+	payload, err := json.Marshal(np)
 	if err != nil {
 		return nil, err
 	}

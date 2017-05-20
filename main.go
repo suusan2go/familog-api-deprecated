@@ -60,6 +60,8 @@ func main() {
 
 	// routing
 	e.GET("/", h.GetAppInfo) // routing for healthcheck
+	e.GET("/user", h.GetUser, h.Authenticate)
+	e.PATCH("/user", h.PatchUser, h.Authenticate)
 	e.POST("/device", h.PostDevice)
 	e.POST("/push_notification_tokens", h.PostPushNotificationToken)
 	e.POST("/session", h.PostSession)

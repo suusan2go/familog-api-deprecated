@@ -4,6 +4,7 @@ import (
 	"mime/multipart"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/suzan2go/familog-api/lib/uploader"
@@ -48,8 +49,27 @@ func (db *DB) FindUserBySessionToken(sessionToken string) (*User, error) {
 	return user, nil
 }
 
-// UpdateUserImage create user images
-func (db *DB) UpdateUserImage(file *multipart.FileHeader, user *User) error {
+// UpdateUser update user value
+func (db *DB) UpdateUser(user *User, name string, file *multipart.FileHeader) error {
+	tx := DB{db.Begin()}
+	user.Name = name
+	if err := tx.Save(user).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	if err := tx.UpdateUserImage(user, file); err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
+}
+
+// UpdateUserImage update user value
+func (db *DB) UpdateUserImage(user *User, file *multipart.FileHeader) error {
+	if file == nil {
+		return nil
+	}
 	originalUser := *user
 	filePath := filepath.Join("users",
 		strconv.Itoa(int(user.ID)),
@@ -80,7 +100,7 @@ func (user *User) AfterFind() (err error) {
 	user.Image = Image{
 		URI:  url.String(),
 		Name: user.ImagePath,
-		Type: "image/" + filepath.Ext(url.String()),
+		Type: "image/" + strings.Trim(filepath.Ext(user.ImagePath), "."),
 	}
 	return
 }

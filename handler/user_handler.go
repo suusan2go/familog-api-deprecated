@@ -35,5 +35,5 @@ func (h *Handler) GetUser(c echo.Context) error {
 	enc := json.NewEncoder(buf)
 	enc.SetEscapeHTML(false)
 	_ = enc.Encode(ac.CurrentUser)
-	return c.JSON(http.StatusOK, buf.Bytes())
+	return c.JSONBlob(http.StatusOK, buf.Bytes())
 }

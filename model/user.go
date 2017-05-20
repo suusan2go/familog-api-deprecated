@@ -1,10 +1,13 @@
 package model
 
 import (
+	"mime/multipart"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/suzan2go/familog-api/lib/uploader"
+	"github.com/suzan2go/familog-api/util"
 )
 
 // Image struct for image
@@ -21,7 +24,6 @@ type User struct {
 	Devices   []Device  `json:"-"`
 	Image     Image     `gorm:"-" json:"image"`
 	ImagePath string    `json:"-"`
-	ImageURL  string    `gorm:"-" json:"-"`
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
 }
@@ -46,20 +48,63 @@ func (db *DB) FindUserBySessionToken(sessionToken string) (*User, error) {
 	return user, nil
 }
 
+// UpdateUserImage create user images
+func (db *DB) UpdateUserImage(file *multipart.FileHeader, user *User) error {
+	originalUser := *user
+	filePath := filepath.Join("users",
+		strconv.Itoa(int(user.ID)),
+		util.GenerateRandomToken(16)+filepath.Ext(file.Filename),
+	)
+	user.DeleteFile()
+	user.ImagePath = filePath
+	if err := db.Save(user).Error; err != nil {
+		return err
+	}
+	if err := user.UploadFile(file); err != nil {
+		return err
+	}
+	originalUser.DeleteFile()
+	return nil
+}
+
 // AfterFind gorm AfterFind callback implementation
-func (u *User) AfterFind() (err error) {
-	if len(u.ImagePath) == 0 {
+func (user *User) AfterFind() (err error) {
+	if len(user.ImagePath) == 0 {
 		return
 	}
 	upl := uploader.InitUploader()
-	url, err := upl.GetImageURL(u.ImagePath)
+	url, err := upl.GetImageURL(user.ImagePath)
 	if err != nil {
 		return err
 	}
-	u.Image = Image{
+	user.Image = Image{
 		URI:  url.String(),
-		Name: u.ImagePath,
+		Name: user.ImagePath,
 		Type: "image/" + filepath.Ext(url.String()),
 	}
 	return
+}
+
+// UploadFile upload file
+func (user *User) UploadFile(file *multipart.FileHeader) error {
+	src, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer src.Close()
+	uploader := uploader.InitUploader()
+	_, errr := uploader.UploadImage(src, user.ImagePath)
+	if errr != nil {
+		return errr
+	}
+	return nil
+}
+
+// DeleteFile uploaded file
+func (user *User) DeleteFile() error {
+	uploader := uploader.InitUploader()
+	if err := uploader.DeleteImage(user.ImagePath); err != nil {
+		return err
+	}
+	return nil
 }

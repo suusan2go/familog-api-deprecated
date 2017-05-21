@@ -12,8 +12,9 @@ import (
 func (h *Handler) PatchUser(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
 	file, _ := c.FormFile("image")
+	user := &ac.CurrentUser
 	if err := h.DB.UpdateUser(
-		&ac.CurrentUser,
+		user,
 		c.FormValue("name"),
 		file,
 	); err != nil {
@@ -23,7 +24,7 @@ func (h *Handler) PatchUser(c echo.Context) error {
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
 	enc.SetEscapeHTML(false)
-	_ = enc.Encode(ac.CurrentUser)
+	_ = enc.Encode(user)
 	return c.JSONBlob(http.StatusOK, buf.Bytes())
 }
 

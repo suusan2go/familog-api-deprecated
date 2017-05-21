@@ -62,6 +62,7 @@ func (db *DB) UpdateUser(user *User, name string, file *multipart.FileHeader) er
 		return err
 	}
 	tx.Commit()
+	user.AfterFind()
 	return nil
 }
 

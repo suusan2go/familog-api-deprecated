@@ -4,26 +4,18 @@ import (
 	"mime/multipart"
 	"path/filepath"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/suzan2go/familog-api/lib/uploader"
 	"github.com/suzan2go/familog-api/util"
 )
 
-// Image struct for image
-type Image struct {
-	URI  string `json:"uri"`
-	Name string `json:"name"`
-	Type string `json:"type"`
-}
-
 // User User model
 type User struct {
 	ID        uint      `gorm:"primary_key" json:"id"`
 	Name      string    `json:"name"`
 	Devices   []Device  `json:"-"`
-	Image     Image     `gorm:"-" json:"image"`
+	ImageURL  string    `gorm:"-" json:"imageUrl"`
 	ImagePath string    `json:"-"`
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
@@ -98,11 +90,7 @@ func (user *User) AfterFind() (err error) {
 	if err != nil {
 		return err
 	}
-	user.Image = Image{
-		URI:  url.String(),
-		Name: user.ImagePath,
-		Type: "image/" + strings.Trim(filepath.Ext(user.ImagePath), "."),
-	}
+	user.ImageURL = url.String()
 	return
 }
 

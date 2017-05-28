@@ -53,12 +53,39 @@ func (db *DB) CreateDiaryEntry(
 // UpdateDiaryEntry update user related diary
 func (db *DB) UpdateDiaryEntry(
 	user *User, diaryEntry *DiaryEntry, title string, body string, emoji string,
+	images []*multipart.FileHeader,
 ) error {
 	diaryEntry.Title = title
 	diaryEntry.Body = body
 	diaryEntry.Emoji = emoji
 	if err := db.Save(diaryEntry).Error; err != nil {
 		return err
+	}
+	if err := db.UpdateOrCreateDiaryEntryImages(images, diaryEntry); err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOrCreateDiaryEntryImages update diaryEntry related images if images[n] is not nil
+func (db *DB) UpdateOrCreateDiaryEntryImages(
+	images []*multipart.FileHeader,
+	diaryEntry *DiaryEntry,
+) error {
+	for index, image := range images {
+		if image == nil {
+			continue
+		}
+		if len(diaryEntry.DiaryEntryImages) >= index+1 {
+			di := diaryEntry.DiaryEntryImages[index]
+			if err := db.UpdateDiaryEntryImage(image, &di); err != nil {
+				return err
+			}
+		} else {
+			if _, err := db.CreateDiaryEntryImage(image, diaryEntry); err != nil {
+				return err
+			}
+		}
 	}
 	return nil
 }

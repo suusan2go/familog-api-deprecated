@@ -39,7 +39,7 @@ func TestUpdateDiaryEntry(t *testing.T) {
 	var initialCount int
 	var afterCount int
 	db.Table("diary_entries").Count(&initialCount)
-	db.UpdateDiaryEntry(&device.User, diaryEntry, "更新後本文", diaryEntry.Body, diaryEntry.Emoji)
+	db.UpdateDiaryEntry(&device.User, diaryEntry, "更新後本文", diaryEntry.Body, diaryEntry.Emoji, []*multipart.FileHeader{})
 	db.Table("diary_entries").Count(&afterCount)
 
 	if initialCount-afterCount != 0 {

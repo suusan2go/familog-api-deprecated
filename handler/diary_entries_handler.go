@@ -54,15 +54,25 @@ func (h *Handler) PatchDiaryEntry(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+	file1, _ := c.FormFile("image1")
+	file2, _ := c.FormFile("image2")
+	file3, _ := c.FormFile("image3")
+	images := []*multipart.FileHeader{
+		file1,
+		file2,
+		file3,
+	}
 	if err := h.DB.UpdateDiaryEntry(
 		&ac.CurrentUser,
 		diaryEntry,
 		c.FormValue("title"),
 		c.FormValue("body"),
 		c.FormValue("emoji"),
+		images,
 	); err != nil {
 		return err
 	}
+	diaryEntry, _ = h.DB.FindMyDiaryEntry(c.Param("id"), &ac.CurrentUser)
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
 	enc.SetEscapeHTML(false)

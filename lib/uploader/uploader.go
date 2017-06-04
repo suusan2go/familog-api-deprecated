@@ -21,8 +21,8 @@ type Config struct {
 	AccessKeySecret string
 }
 
-// InitUploader init uploader struct
-func InitUploader() *Uploader {
+// NewUploader init uploader struct
+func NewUploader() *Uploader {
 	// Use a secure connection.
 	ssl := true
 	config := fetchConfig()

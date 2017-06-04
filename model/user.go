@@ -85,7 +85,7 @@ func (user *User) AfterFind() (err error) {
 	if len(user.ImagePath) == 0 {
 		return
 	}
-	upl := uploader.InitUploader()
+	upl := uploader.NewUploader()
 	url, err := upl.GetImageURL(user.ImagePath)
 	if err != nil {
 		return err
@@ -101,7 +101,7 @@ func (user *User) UploadFile(file *multipart.FileHeader) error {
 		return err
 	}
 	defer src.Close()
-	uploader := uploader.InitUploader()
+	uploader := uploader.NewUploader()
 	_, errr := uploader.UploadImage(src, user.ImagePath)
 	if errr != nil {
 		return errr
@@ -111,7 +111,7 @@ func (user *User) UploadFile(file *multipart.FileHeader) error {
 
 // DeleteFile uploaded file
 func (user *User) DeleteFile() error {
-	uploader := uploader.InitUploader()
+	uploader := uploader.NewUploader()
 	if err := uploader.DeleteImage(user.ImagePath); err != nil {
 		return err
 	}

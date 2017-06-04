@@ -70,7 +70,7 @@ func (image *DiaryEntryImage) UploadFile(file *multipart.FileHeader) error {
 		return err
 	}
 	defer src.Close()
-	uploader := uploader.InitUploader()
+	uploader := uploader.NewUploader()
 	_, errr := uploader.UploadImage(src, image.FilePath)
 	if errr != nil {
 		return errr
@@ -80,7 +80,7 @@ func (image *DiaryEntryImage) UploadFile(file *multipart.FileHeader) error {
 
 // DeleteFile uploaded file
 func (image *DiaryEntryImage) DeleteFile() error {
-	uploader := uploader.InitUploader()
+	uploader := uploader.NewUploader()
 	if err := uploader.DeleteImage(image.FilePath); err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func (image *DiaryEntryImage) DeleteFile() error {
 
 // AfterFind gorm AfterFind callback implementation
 func (image *DiaryEntryImage) AfterFind() (err error) {
-	u := uploader.InitUploader()
+	u := uploader.NewUploader()
 	url, err := u.GetImageURL(image.FilePath)
 	if err != nil {
 		return err

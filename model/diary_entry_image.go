@@ -70,8 +70,8 @@ func (image *DiaryEntryImage) UploadFile(file *multipart.FileHeader) error {
 		return err
 	}
 	defer src.Close()
-	uploader := uploader.NewUploader()
-	_, errr := uploader.UploadImage(src, image.FilePath)
+	upl := uploader.NewUploader()
+	_, errr := upl.UploadImage(src, image.FilePath)
 	if errr != nil {
 		return errr
 	}
@@ -80,8 +80,8 @@ func (image *DiaryEntryImage) UploadFile(file *multipart.FileHeader) error {
 
 // DeleteFile uploaded file
 func (image *DiaryEntryImage) DeleteFile() error {
-	uploader := uploader.NewUploader()
-	if err := uploader.DeleteImage(image.FilePath); err != nil {
+	upl := uploader.NewUploader()
+	if err := upl.DeleteImage(image.FilePath); err != nil {
 		return err
 	}
 	return nil

@@ -6,12 +6,6 @@ AWS_ECS_CLUSTER_NAME=familog-production
 AWS_ECS_SERVICE_NAME=familog-production
 AWS_ECR_REP_NAME=familog
 
-configure_aws_cli(){
-	aws --version
-	aws configure set default.region ${AWS_DEFAULT_REGION}
-	aws configure set default.output json
-}
-
 push_ecr_image(){
 	eval $(aws ecr get-login --region ${AWS_DEFAULT_REGION})
 	docker push $AWS_ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REP_NAME}:$CIRCLE_SHA1
@@ -20,7 +14,6 @@ push_ecr_image(){
 }
 
 docker build -t $AWS_ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REP_NAME}:$CIRCLE_SHA1 .
-configure_aws_cli
 push_ecr_image
 wget https://github.com/crowdworks/ecs-goploy/releases/download/v0.2.0/ecs-goploy_v0.2.0_linux_amd64.zip
 unzip ecs-goploy_v0.2.0_linux_amd64.zip

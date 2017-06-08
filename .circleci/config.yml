@@ -88,7 +88,7 @@ jobs:
               tar -xz -C /tmp -f /tmp/docker-$VER.tgz
               mv /tmp/docker/* /usr/bin
               # install awscli
-              apt-get update && apt-get install -y awscli jq
+              apt-get update && apt-get install -y unzip
               # deploy
               .circleci/script/deploy.sh
             fi

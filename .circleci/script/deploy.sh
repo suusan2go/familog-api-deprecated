@@ -17,4 +17,4 @@ docker build -t $AWS_ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AW
 push_ecr_image
 wget https://github.com/crowdworks/ecs-goploy/releases/download/v0.2.0/ecs-goploy_v0.2.0_linux_amd64.zip
 unzip ecs-goploy_v0.2.0_linux_amd64.zip
-./ecs-goploy deploy -c $AWS_ECS_CLUSTER_NAME -n $AWS_ECS_SERVICE_NAME -i $AWS_ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REP_NAME}:$CIRCLE_SHA1 -t 300
+./ecs-goploy deploy -c $AWS_ECS_CLUSTER_NAME -n $AWS_ECS_SERVICE_NAME -i $AWS_ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REP_NAME}:$CIRCLE_SHA1 -t 360

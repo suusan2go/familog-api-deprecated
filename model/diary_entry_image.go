@@ -1,8 +1,8 @@
 package model
 
 import (
+	"github.com/suzan2go/familog-api/lib/token_generator"
 	"github.com/suzan2go/familog-api/lib/uploader"
-	"github.com/suzan2go/familog-api/util"
 	"mime/multipart"
 	"path/filepath"
 	"strconv"
@@ -23,7 +23,7 @@ type DiaryEntryImage struct {
 func (db *DB) CreateDiaryEntryImage(file *multipart.FileHeader, diaryEntry *DiaryEntry) (*DiaryEntryImage, error) {
 	filePath := filepath.Join("diary_entry_images",
 		strconv.Itoa(int(diaryEntry.ID)),
-		util.GenerateRandomToken(16)+filepath.Ext(file.Filename),
+		tokenGenerator.GenerateRandomToken(16)+filepath.Ext(file.Filename),
 	)
 	diaryEntryImage := &DiaryEntryImage{DiaryEntryID: diaryEntry.ID, FilePath: filePath}
 	db.Create(diaryEntryImage)
@@ -38,7 +38,7 @@ func (db *DB) UpdateDiaryEntryImage(file *multipart.FileHeader, diaryEntryImage 
 	originalDiaryEntryImage := *diaryEntryImage
 	filePath := filepath.Join("diary_entry_images",
 		strconv.Itoa(int(diaryEntryImage.DiaryEntryID)),
-		util.GenerateRandomToken(16)+filepath.Ext(file.Filename),
+		tokenGenerator.GenerateRandomToken(16)+filepath.Ext(file.Filename),
 	)
 	diaryEntryImage.DeleteFile()
 	diaryEntryImage.FilePath = filePath

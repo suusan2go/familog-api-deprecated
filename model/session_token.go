@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/suzan2go/familog-api/util"
+	"github.com/suzan2go/familog-api/lib/token_generator"
 	"time"
 )
 
@@ -32,7 +32,7 @@ func (db *DB) GenerateOrExtendSessionToken(user *User) (*SessionToken, error) {
 	if db.NewRecord(sessionToken) == false {
 		return sessionToken, nil
 	}
-	sessionToken.Token = util.GenerateRandomToken(32)
+	sessionToken.Token = tokenGenerator.GenerateRandomToken(32)
 	sessionToken.UserID = user.ID
 	sessionToken.ExpiresAt = time.Now().AddDate(0, 1, 0)
 	if err := db.Create(&sessionToken).Error; err != nil {

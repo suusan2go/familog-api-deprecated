@@ -12,13 +12,13 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/stretchr/testify/assert"
 	"github.com/suzan2go/familog-api/model"
-	"github.com/suzan2go/familog-api/util"
+	"github.com/suzan2go/familog-api/lib/token_generator"
 )
 
 // PostSession return DiaryIndex json
 func TestPostSession(t *testing.T) {
 	db, _ := model.InitTestDB(t)
-	deviceToken := util.GenerateRandomToken(32)
+	deviceToken := tokenGenerator.GenerateRandomToken(32)
 	db.FindOrCreateDeviceByToken(deviceToken)
 
 	e := echo.New()

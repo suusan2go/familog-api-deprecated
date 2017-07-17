@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	"github.com/suzan2go/familog-api/util"
+	"github.com/suzan2go/familog-api/lib/token_generator"
 )
 
 // DiaryInvitation Model
@@ -18,7 +18,7 @@ type DiaryInvitation struct {
 
 // CreateDiaryInvitation create user related diary invitation
 func (db *DB) CreateDiaryInvitation(diary *Diary) (*DiaryInvitation, error) {
-	diaryInvitation := &DiaryInvitation{DiaryID: diary.ID, InvitationCode: util.GenerateRandomToken(32), ExpiredAt: nil}
+	diaryInvitation := &DiaryInvitation{DiaryID: diary.ID, InvitationCode: tokenGenerator.GenerateRandomToken(32), ExpiredAt: nil}
 	if err := db.Create(diaryInvitation).Error; err != nil {
 		return nil, err
 	}

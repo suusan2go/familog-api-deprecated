@@ -66,7 +66,7 @@ func (db *DB) UpdateUserImage(user *User, file *multipart.FileHeader) error {
 	originalUser := *user
 	filePath := filepath.Join("users",
 		strconv.Itoa(int(user.ID)),
-		tokenGenerator.generateRandomToken(16)+filepath.Ext(file.Filename),
+		tokenGenerator.GenerateRandomToken(16)+filepath.Ext(file.Filename),
 	)
 	user.DeleteFile()
 	user.ImagePath = filePath

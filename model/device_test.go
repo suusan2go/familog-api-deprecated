@@ -10,7 +10,7 @@ func TestFindOrCreateDeviceByToken(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("devices")
 
-	deviceToken := tokenGenerator.generateRandomToken(32)
+	deviceToken := tokenGenerator.GenerateRandomToken(32)
 	var initialCount int
 	var afterCount int
 	db.Table("devices").Count(&initialCount)

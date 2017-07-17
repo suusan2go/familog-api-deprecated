@@ -10,7 +10,7 @@ func TestCreateDiary(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("diaries")
 
-	deviceToken := tokenGenerator.generateRandomToken(32)
+	deviceToken := tokenGenerator.GenerateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 
 	var initialCount int

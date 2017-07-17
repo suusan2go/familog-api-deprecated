@@ -23,7 +23,7 @@ type DiaryEntryImage struct {
 func (db *DB) CreateDiaryEntryImage(file *multipart.FileHeader, diaryEntry *DiaryEntry) (*DiaryEntryImage, error) {
 	filePath := filepath.Join("diary_entry_images",
 		strconv.Itoa(int(diaryEntry.ID)),
-		tokenGenerator.generateRandomToken(16)+filepath.Ext(file.Filename),
+		tokenGenerator.GenerateRandomToken(16)+filepath.Ext(file.Filename),
 	)
 	diaryEntryImage := &DiaryEntryImage{DiaryEntryID: diaryEntry.ID, FilePath: filePath}
 	db.Create(diaryEntryImage)
@@ -38,7 +38,7 @@ func (db *DB) UpdateDiaryEntryImage(file *multipart.FileHeader, diaryEntryImage 
 	originalDiaryEntryImage := *diaryEntryImage
 	filePath := filepath.Join("diary_entry_images",
 		strconv.Itoa(int(diaryEntryImage.DiaryEntryID)),
-		tokenGenerator.generateRandomToken(16)+filepath.Ext(file.Filename),
+		tokenGenerator.GenerateRandomToken(16)+filepath.Ext(file.Filename),
 	)
 	diaryEntryImage.DeleteFile()
 	diaryEntryImage.FilePath = filePath

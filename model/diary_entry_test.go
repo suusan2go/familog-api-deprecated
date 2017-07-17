@@ -11,7 +11,7 @@ func TestCreateDiaryEntry(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("diary_entries")
 
-	deviceToken := tokenGenerator.generateRandomToken(32)
+	deviceToken := tokenGenerator.GenerateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 	diary, _ := db.CreateDiary(&device.User, "日記帳")
 
@@ -31,7 +31,7 @@ func TestUpdateDiaryEntry(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("diary_entries")
 
-	deviceToken := tokenGenerator.generateRandomToken(32)
+	deviceToken := tokenGenerator.GenerateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 	diary, _ := db.CreateDiary(&device.User, "日記帳")
 	diaryEntry, _ := db.CreateDiaryEntry(&device.User, diary, "日記タイトル", "今日はこんなことしたよ", ":smile:", []*multipart.FileHeader{})

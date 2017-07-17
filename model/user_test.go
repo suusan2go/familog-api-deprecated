@@ -9,7 +9,7 @@ func TestFindUserByDeviceToken(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("session_tokens")
 
-	deviceToken := tokenGenerator.generateRandomToken(32)
+	deviceToken := tokenGenerator.GenerateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 
 	user1, e1 := db.FindUserByDeviceToken(device.Token)
@@ -33,7 +33,7 @@ func TestFindUserBySessionToken(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("diary_entries")
 
-	deviceToken := tokenGenerator.generateRandomToken(32)
+	deviceToken := tokenGenerator.GenerateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 	user := &device.User
 	sessionToken, _ := db.GenerateOrExtendSessionToken(user)

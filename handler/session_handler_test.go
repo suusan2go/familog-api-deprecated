@@ -18,7 +18,7 @@ import (
 // PostSession return DiaryIndex json
 func TestPostSession(t *testing.T) {
 	db, _ := model.InitTestDB(t)
-	deviceToken := tokenGenerator.generateRandomToken(32)
+	deviceToken := tokenGenerator.GenerateRandomToken(32)
 	db.FindOrCreateDeviceByToken(deviceToken)
 
 	e := echo.New()

@@ -18,7 +18,7 @@ type DiaryInvitation struct {
 
 // CreateDiaryInvitation create user related diary invitation
 func (db *DB) CreateDiaryInvitation(diary *Diary) (*DiaryInvitation, error) {
-	diaryInvitation := &DiaryInvitation{DiaryID: diary.ID, InvitationCode: tokenGenerator.generateRandomToken(32), ExpiredAt: nil}
+	diaryInvitation := &DiaryInvitation{DiaryID: diary.ID, InvitationCode: tokenGenerator.GenerateRandomToken(32), ExpiredAt: nil}
 	if err := db.Create(diaryInvitation).Error; err != nil {
 		return nil, err
 	}

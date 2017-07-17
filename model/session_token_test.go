@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/suzan2go/familog-api/util"
+	"github.com/suzan2go/familog-api/lib/token_generator"
 	"testing"
 	"time"
 )
@@ -10,7 +10,7 @@ func TestGenerateOrExtendSessionToken(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("session_tokens")
 
-	deviceToken := util.GenerateRandomToken(32)
+	deviceToken := tokenGenerator.generateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 	user := &device.User
 
@@ -37,7 +37,7 @@ func TestFindSessionToken(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("diary_entries")
 
-	deviceToken := util.GenerateRandomToken(32)
+	deviceToken := tokenGenerator.generateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 	user := &device.User
 	sessionToken, _ := db.GenerateOrExtendSessionToken(user)
@@ -60,7 +60,7 @@ func TestIsValid(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("diary_entries")
 
-	deviceToken := util.GenerateRandomToken(32)
+	deviceToken := tokenGenerator.generateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 	user := &device.User
 	sessionToken, _ := db.GenerateOrExtendSessionToken(user)

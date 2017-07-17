@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/suzan2go/familog-api/util"
+	"github.com/suzan2go/familog-api/lib/token_generator"
 	"mime/multipart"
 	"testing"
 )
@@ -11,7 +11,7 @@ func TestCreateDiaryEntry(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("diary_entries")
 
-	deviceToken := util.GenerateRandomToken(32)
+	deviceToken := tokenGenerator.generateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 	diary, _ := db.CreateDiary(&device.User, "日記帳")
 
@@ -31,7 +31,7 @@ func TestUpdateDiaryEntry(t *testing.T) {
 	db, cleanDB := InitTestDB(t)
 	defer cleanDB("diary_entries")
 
-	deviceToken := util.GenerateRandomToken(32)
+	deviceToken := tokenGenerator.generateRandomToken(32)
 	device, _ := db.FindOrCreateDeviceByToken(deviceToken)
 	diary, _ := db.CreateDiary(&device.User, "日記帳")
 	diaryEntry, _ := db.CreateDiaryEntry(&device.User, diary, "日記タイトル", "今日はこんなことしたよ", ":smile:", []*multipart.FileHeader{})

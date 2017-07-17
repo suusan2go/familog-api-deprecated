@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/suzan2go/familog-api/lib/token_generator"
 	"github.com/suzan2go/familog-api/lib/uploader"
-	"github.com/suzan2go/familog-api/util"
 )
 
 // User User model
@@ -66,7 +66,7 @@ func (db *DB) UpdateUserImage(user *User, file *multipart.FileHeader) error {
 	originalUser := *user
 	filePath := filepath.Join("users",
 		strconv.Itoa(int(user.ID)),
-		util.GenerateRandomToken(16)+filepath.Ext(file.Filename),
+		tokenGenerator.generateRandomToken(16)+filepath.Ext(file.Filename),
 	)
 	user.DeleteFile()
 	user.ImagePath = filePath

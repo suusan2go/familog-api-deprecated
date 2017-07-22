@@ -10,4 +10,5 @@ func (db *DB) Migration() {
 	db.AutoMigrate(&DiaryEntry{})
 	db.AutoMigrate(&DiaryEntryImage{})
 	db.AutoMigrate(&DiaryInvitation{})
+	db.AutoMigrate(&DiaryEntryComment{})
 }

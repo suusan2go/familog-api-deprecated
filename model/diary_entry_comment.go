@@ -36,7 +36,7 @@ func (db *DB) CreateDiaryEntryComment(
 func (db *DB) DeleteDiaryEntryComment(
 	user *User, diaryEntryComment *DiaryEntryComment,
 ) error {
-	if diaryEntryComment.UserID == user.ID {
+	if diaryEntryComment.UserID != user.ID {
 		return errors.New("not user's comment")
 	}
 	if err := db.Delete(diaryEntryComment).Error; err != nil {

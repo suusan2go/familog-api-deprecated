@@ -57,6 +57,6 @@ func TestDeleteDiaryEntryComment(t *testing.T) {
 	db.Table("diary_entry_comments").Count(&afterCount)
 
 	if initialCount-afterCount != 1 {
-		t.Error("diary entry not deleted %v", err)
+		t.Errorf("diary entry not deleted %s", err)
 	}
 }

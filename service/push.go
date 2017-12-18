@@ -4,8 +4,8 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/suzan2go/familog-api/domain/model"
 	"github.com/suzan2go/familog-api/lib/push"
-	"github.com/suzan2go/familog-api/model"
 )
 
 // PushNotificationToSubscriver push notification to user

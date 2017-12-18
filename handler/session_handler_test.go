@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/stretchr/testify/assert"
-	"github.com/suzan2go/familog-api/model"
+	"github.com/suzan2go/familog-api/domain/model"
 	"github.com/suzan2go/familog-api/lib/token_generator"
 )
 

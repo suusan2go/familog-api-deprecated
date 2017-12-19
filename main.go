@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/suzan2go/familog-api/domain/model"
-	"github.com/suzan2go/familog-api/handler"
+	"github.com/suusan2go/familog-api/domain/model"
+	"github.com/suusan2go/familog-api/handler"
 )
 
 // Map Generic Map

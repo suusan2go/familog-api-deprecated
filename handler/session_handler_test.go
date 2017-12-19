@@ -11,8 +11,8 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/stretchr/testify/assert"
-	"github.com/suzan2go/familog-api/domain/model"
-	"github.com/suzan2go/familog-api/lib/token_generator"
+	"github.com/suusan2go/familog-api/domain/model"
+	"github.com/suusan2go/familog-api/lib/token_generator"
 )
 
 // PostSession return DiaryIndex json

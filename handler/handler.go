@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/suzan2go/familog-api/domain/model"
+	"github.com/suusan2go/familog-api/domain/model"
 )
 
 // Handler Handle Http Request

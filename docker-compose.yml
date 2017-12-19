@@ -16,7 +16,7 @@ services:
     env_file: .env
     command: go run main.go
     volumes:
-      - .:/go/src/github.com/suzan2go/familog-api
+      - .:/go/src/github.com/suusan2go/familog-api
     ports:
       - "8080:8080"
     tty: true

@@ -1,8 +1,9 @@
 package model
 
 import (
-	"github.com/suzan2go/familog-api/lib/token_generator"
 	"time"
+
+	"github.com/suusan2go/familog-api/lib/token_generator"
 )
 
 // SessionToken model

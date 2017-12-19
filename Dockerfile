@@ -1,6 +1,6 @@
 FROM golang:1.8.1
 
-ENV APPROOT ${GOPATH}/src/github.com/suzan2go/familog-api
+ENV APPROOT ${GOPATH}/src/github.com/suusan2go/familog-api
 
 WORKDIR ${APPROOT}
 

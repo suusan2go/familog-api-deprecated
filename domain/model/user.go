@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/suzan2go/familog-api/lib/token_generator"
-	"github.com/suzan2go/familog-api/lib/uploader"
+	"github.com/suusan2go/familog-api/lib/token_generator"
+	"github.com/suusan2go/familog-api/lib/uploader"
 )
 
 // User User model

@@ -10,7 +10,7 @@ jobs:
           POSTGRES_DB: familog_development
           POSTGRES_PASSWORD: password
 
-    working_directory: /go/src/github.com/suzan2go/familog-api
+    working_directory: /go/src/github.com/suusan2go/familog-api
 
     environment:
       TEST_RESULTS: /tmp/test-results

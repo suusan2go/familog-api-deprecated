@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	"github.com/suzan2go/familog-api/lib/token_generator"
+	"github.com/suusan2go/familog-api/lib/token_generator"
 )
 
 // DiaryInvitation Model

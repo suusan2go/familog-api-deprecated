@@ -1,9 +1,10 @@
 package model
 
 import (
-	"github.com/suzan2go/familog-api/lib/token_generator"
 	"testing"
 	"time"
+
+	"github.com/suusan2go/familog-api/lib/token_generator"
 )
 
 func TestGenerateOrExtendSessionToken(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/suzan2go/familog-api/service"
+	"github.com/suusan2go/familog-api/service"
 )
 
 // PostDiaryEntry Create diary_entry

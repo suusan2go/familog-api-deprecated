@@ -1,9 +1,10 @@
 package model
 
 import (
-	"github.com/suzan2go/familog-api/lib/token_generator"
 	"mime/multipart"
 	"testing"
+
+	"github.com/suusan2go/familog-api/lib/token_generator"
 )
 
 func TestCreateDiaryEntry(t *testing.T) {

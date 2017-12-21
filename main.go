@@ -56,7 +56,7 @@ func main() {
 	e.HTTPErrorHandler = JSONErrorHandler
 	// middleware setting
 	e.Use(middleware.Logger())
-	h := &handler.Handler{DB: db}
+	h := &handler.Handler{DB: db, Registry: registry.Registry{db}}
 
 	// routing
 	e.GET("/", h.GetAppInfo) // routing for healthcheck

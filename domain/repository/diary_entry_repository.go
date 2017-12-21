@@ -6,6 +6,5 @@ import (
 
 // DiaryEntryRepository repository interface for DiaryEntry
 type DiaryEntryRepository interface {
-	FindDiaryEntries(diary model.Diary) (*model.DiaryEntries, error)
-	saveDiaryEntry(diaryEntry model.DiaryEntry) (*model.DiaryEntry, error)
+	FindDiaryEntry(user *model.User, ID string) (*model.DiaryEntry, error)
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/suusan2go/familog-api/domain/model"
 	"github.com/suusan2go/familog-api/handler"
+	"github.com/suusan2go/familog-api/registry"
 )
 
 // Map Generic Map
@@ -56,7 +57,8 @@ func main() {
 	e.HTTPErrorHandler = JSONErrorHandler
 	// middleware setting
 	e.Use(middleware.Logger())
-	h := &handler.Handler{DB: db, Registry: registry.Registry{db}}
+	reg := registry.Registry{DB: db}
+	h := &handler.Handler{DB: db, Registry: &reg}
 
 	// routing
 	e.GET("/", h.GetAppInfo) // routing for healthcheck

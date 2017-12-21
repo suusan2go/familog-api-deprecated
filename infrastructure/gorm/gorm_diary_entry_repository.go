@@ -8,7 +8,7 @@ import (
 
 // DiaryEntryRepository implemented by gorm
 type DiaryEntryRepository struct {
-	db *model.DB
+	DB *model.DB
 }
 
 // FindDiaryEntry find user subscribed diary entry by id
@@ -23,7 +23,7 @@ func (repo DiaryEntryRepository) FindDiaryEntry(user *model.User, ID string) (*m
 }
 
 func (repo DiaryEntryRepository) subscribedDiaryEntryScope(user *model.User) *gorm.DB {
-	return repo.db.Joins("join diary_subscribers on diary_subscribers.diary_id = diary_entries.diary_id").
+	return repo.DB.Joins("join diary_subscribers on diary_subscribers.diary_id = diary_entries.diary_id").
 		Where("diary_subscribers.user_id = ?", user.ID).
 		Preload("User").
 		Preload("DiaryEntryImages")

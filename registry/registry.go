@@ -11,6 +11,7 @@ type Registry struct {
 	DB *model.DB
 }
 
+// DiaryEntryRepository return DI
 func (r Registry) DiaryEntryRepository() repository.DiaryEntryRepository {
-	return gorm.DiaryEntryRepository{r.DB}
+	return gorm.DiaryEntryRepository{DB: r.DB}
 }

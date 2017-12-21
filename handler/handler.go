@@ -5,11 +5,13 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/suusan2go/familog-api/domain/model"
+	"github.com/suusan2go/familog-api/registry"
 )
 
 // Handler Handle Http Request
 type Handler struct {
-	DB *model.DB
+	DB       *model.DB
+	Registry *registry.Registry
 }
 
 // AuthenticatedContext include CurrentUser

@@ -112,7 +112,8 @@ func (h *Handler) GetDiaryEntries(c echo.Context) error {
 // GetDiaryEntry diary entry
 func (h *Handler) GetDiaryEntry(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	diaryEntry, e := h.DB.FindDiaryEntry(&ac.CurrentUser, c.Param("id"))
+	repo := h.Registry.DiaryEntryRepository()
+	diaryEntry, e := repo.FindDiaryEntry(&ac.CurrentUser, c.Param("id"))
 	if e != nil {
 		return e
 	}

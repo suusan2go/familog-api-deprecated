@@ -151,17 +151,6 @@ func (db *DB) MoreNewerDiaryEntries(diary *Diary, maxID string) (*DiaryEntries, 
 	return diaryEntries, nil
 }
 
-// FindDiaryEntry find user subscribed diary entry by id
-func (db *DB) FindDiaryEntry(user *User, ID string) (*DiaryEntry, error) {
-	diaryEntry := &DiaryEntry{}
-	if err := db.subscribedDiaryEntryScope(user).
-		Where("diary_entries.id = ?", ID).
-		First(diaryEntry).Error; err != nil {
-		return nil, err
-	}
-	return diaryEntry, nil
-}
-
 func (db *DB) diaryScope(diary *Diary) *gorm.DB {
 	return db.Where("diary_entries.diary_id = ?", diary.ID).
 		Order("diary_entries.id DESC").

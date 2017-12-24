@@ -13,7 +13,8 @@ import (
 // PostDiaryEntry Create diary_entry
 func (h *Handler) PostDiaryEntry(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	diary, err := h.DB.FindDiary(c.Param("id"), &ac.CurrentUser)
+	repo := h.Registry.DiaryRepository()
+	diary, err := repo.FindDiary(c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}
@@ -83,7 +84,8 @@ func (h *Handler) PatchDiaryEntry(c echo.Context) error {
 // GetDiaryEntries diary entries index
 func (h *Handler) GetDiaryEntries(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	diary, e := h.DB.FindDiary(c.Param("id"), &ac.CurrentUser)
+	repo := h.Registry.DiaryRepository()
+	diary, e := repo.FindDiary(c.Param("id"), &ac.CurrentUser)
 	if e != nil {
 		return e
 	}

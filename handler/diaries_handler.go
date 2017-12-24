@@ -13,7 +13,8 @@ type diariesHandlerPostRequest struct {
 // DiaryIndex return DiaryIndex json
 func (h *Handler) DiaryIndex(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	diaries, err := h.DB.AllDiaries(&ac.CurrentUser)
+	repo := h.Registry.DiaryRepository()
+	diaries, err := repo.AllDiaries(&ac.CurrentUser)
 	if err != nil {
 		return err
 	}

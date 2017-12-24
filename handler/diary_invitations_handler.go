@@ -13,7 +13,8 @@ type diaryInvitationVerificationsPostRequest struct {
 // GetDiaryInvitation return DiaryInvitation Json
 func (h *Handler) GetDiaryInvitation(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	diary, err := h.DB.FindDiary(c.Param("id"), &ac.CurrentUser)
+	repo := h.Registry.DiaryRepository()
+	diary, err := repo.FindDiary(c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}
@@ -27,7 +28,8 @@ func (h *Handler) GetDiaryInvitation(c echo.Context) error {
 // PostDiaryInvitation return DiaryInvitation Json
 func (h *Handler) PostDiaryInvitation(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	diary, err := h.DB.FindDiary(c.Param("id"), &ac.CurrentUser)
+	repo := h.Registry.DiaryRepository()
+	diary, err := repo.FindDiary(c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}

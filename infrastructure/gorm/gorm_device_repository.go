@@ -10,7 +10,7 @@ type DeviceRepository struct {
 }
 
 // FindSubscribers find user subscribed diaries
-func (repo DiaryRepository) FindSubscribers(diaryEntry *model.DiaryEntry) ([]*model.Device, error) {
+func (repo DeviceRepository) FindSubscribers(diaryEntry *model.DiaryEntry) ([]*model.Device, error) {
 	var devices []*model.Device
 	if err := repo.DB.Where("diary_subscribers.diary_id =?", diaryEntry.DiaryID).
 		Where("diary_subscribers.user_id != ?", diaryEntry.UserID).

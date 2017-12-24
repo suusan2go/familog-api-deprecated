@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/suusan2go/familog-api/service"
+	"github.com/suusan2go/familog-api/domain/service"
 )
 
 // PostDiaryEntry Create diary_entry
@@ -38,7 +38,7 @@ func (h *Handler) PostDiaryEntry(c echo.Context) error {
 		return err
 	}
 
-	if err := service.PushNotificationToSubscriver(h.DB, diaryEntry); err != nil {
+	if err := service.DiaryEntryNotificationService(h.Registry.DeviceRepository(), diaryEntry); err != nil {
 		return err
 	}
 	buf := new(bytes.Buffer)

@@ -4,8 +4,8 @@ import (
 	"github.com/suusan2go/familog-api/domain/model"
 )
 
-// DiaryRepository implemented by gorm
-type DiaryRepository struct {
+// DeviceRepository implemented by gorm
+type DeviceRepository struct {
 	DB *model.DB
 }
 

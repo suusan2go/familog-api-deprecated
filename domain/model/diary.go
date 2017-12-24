@@ -2,8 +2,6 @@ package model
 
 import (
 	"time"
-
-	"github.com/jinzhu/gorm"
 )
 
 // Diary Model
@@ -40,28 +38,4 @@ func (db *DB) CreateDiary(user *User, title string) (*Diary, error) {
 	}
 	tx.Commit()
 	return diary, nil
-}
-
-// AllDiaries GetAllDiary
-func (db *DB) AllDiaries(user *User) (*Diaries, error) {
-	diaries := &Diaries{}
-	if err := db.myDiaryScope(user).
-		Find(&diaries.Diaries).Error; err != nil {
-		return nil, err
-	}
-	return diaries, nil
-}
-
-// FindDiary find diary of id
-func (db *DB) FindDiary(id string, user *User) (*Diary, error) {
-	diary := &Diary{}
-	if err := db.myDiaryScope(user).Find(&diary, "diaries.id = ?", id).Error; err != nil {
-		return nil, err
-	}
-	return diary, nil
-}
-
-func (db *DB) myDiaryScope(user *User) *gorm.DB {
-	return db.Joins("JOIN diary_subscribers on diary_subscribers.diary_id = diaries.id").
-		Where("diary_subscribers.user_id = ?", user.ID)
 }

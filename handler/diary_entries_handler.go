@@ -51,7 +51,8 @@ func (h *Handler) PostDiaryEntry(c echo.Context) error {
 // PatchDiaryEntry Create diary
 func (h *Handler) PatchDiaryEntry(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	diaryEntry, err := h.DB.FindMyDiaryEntry(c.Param("id"), &ac.CurrentUser)
+	repo := h.Registry.DiaryEntryRepository()
+	diaryEntry, err := repo.FindMyDiaryEntry(c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}
@@ -73,7 +74,7 @@ func (h *Handler) PatchDiaryEntry(c echo.Context) error {
 	); err != nil {
 		return err
 	}
-	diaryEntry, _ = h.DB.FindMyDiaryEntry(c.Param("id"), &ac.CurrentUser)
+	diaryEntry, _ = repo.FindMyDiaryEntry(c.Param("id"), &ac.CurrentUser)
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
 	enc.SetEscapeHTML(false)

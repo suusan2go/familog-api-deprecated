@@ -22,9 +22,24 @@ func (repo DiaryEntryRepository) FindDiaryEntry(user *model.User, ID string) (*m
 	return diaryEntry, nil
 }
 
+// FindMyDiaryEntry find user wrote entry by id
+func (repo DiaryEntryRepository) FindMyDiaryEntry(id string, user *model.User) (*model.DiaryEntry, error) {
+	diaryEntry := &model.DiaryEntry{}
+	if err := repo.myDiaryEntryScope(user).Preload("User").Preload("DiaryEntryImages").
+		Find(diaryEntry, "diary_entries.id = ?", id).
+		Error; err != nil {
+		return nil, err
+	}
+	return diaryEntry, nil
+}
+
 func (repo DiaryEntryRepository) subscribedDiaryEntryScope(user *model.User) *gorm.DB {
 	return repo.DB.Joins("join diary_subscribers on diary_subscribers.diary_id = diary_entries.diary_id").
 		Where("diary_subscribers.user_id = ?", user.ID).
 		Preload("User").
 		Preload("DiaryEntryImages")
+}
+
+func (repo DiaryEntryRepository) myDiaryEntryScope(user *model.User) *gorm.DB {
+	return repo.DB.Where("diary_entries.user_id = ?", user.ID)
 }

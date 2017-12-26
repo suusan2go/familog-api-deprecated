@@ -105,7 +105,8 @@ func (h *Handler) GetDiaryEntries(c echo.Context) error {
 		}
 		return c.JSON(http.StatusOK, diaryEntries)
 	}
-	diaryEntries, err := h.DB.AllDiaryEntries(diary)
+	repoDe := h.Registry.DiaryEntryRepository()
+	diaryEntries, err := repoDe.AllDiaryEntries(diary)
 	if err != nil {
 		return err
 	}

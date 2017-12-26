@@ -11,6 +11,17 @@ type DiaryEntryRepository struct {
 	DB *model.DB
 }
 
+// AllDiaryEntries GetAllDiaryEntries
+func (repo DiaryEntryRepository) AllDiaryEntries(diary *model.Diary) (*model.DiaryEntries, error) {
+	diaryEntries := &model.DiaryEntries{}
+	if err := repo.diaryScope(diary).
+		Limit(10).
+		Find(&diaryEntries.DiaryEntries).Error; err != nil {
+		return nil, err
+	}
+	return diaryEntries, nil
+}
+
 // FindDiaryEntry find user subscribed diary entry by id
 func (repo DiaryEntryRepository) FindDiaryEntry(user *model.User, ID string) (*model.DiaryEntry, error) {
 	diaryEntry := &model.DiaryEntry{}
@@ -42,4 +53,11 @@ func (repo DiaryEntryRepository) subscribedDiaryEntryScope(user *model.User) *go
 
 func (repo DiaryEntryRepository) myDiaryEntryScope(user *model.User) *gorm.DB {
 	return repo.DB.Where("diary_entries.user_id = ?", user.ID)
+}
+
+func (repo DiaryEntryRepository) diaryScope(diary *model.Diary) *gorm.DB {
+	return repo.DB.Where("diary_entries.diary_id = ?", diary.ID).
+		Order("diary_entries.id DESC").
+		Preload("User").
+		Preload("DiaryEntryImages")
 }

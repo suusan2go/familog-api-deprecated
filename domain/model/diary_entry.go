@@ -116,17 +116,6 @@ func (db *DB) FindMyDiaryEntryImage(diaryEntryID string, diaryEntryImageID strin
 	return diaryEntryImage, nil
 }
 
-// AllDiaryEntries GetAllDiaryEntries
-func (db *DB) AllDiaryEntries(diary *Diary) (*DiaryEntries, error) {
-	diaryEntries := &DiaryEntries{}
-	if err := db.diaryScope(diary).
-		Limit(10).
-		Find(&diaryEntries.DiaryEntries).Error; err != nil {
-		return nil, err
-	}
-	return diaryEntries, nil
-}
-
 // MoreOlderDiaryEntries GetAllDiaryEntries id < sinceID
 func (db *DB) MoreOlderDiaryEntries(diary *Diary, sinceID string) (*DiaryEntries, error) {
 	diaryEntries := &DiaryEntries{}

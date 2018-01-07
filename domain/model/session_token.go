@@ -19,32 +19,3 @@ type SessionToken struct {
 func (s *SessionToken) IsValid() bool {
 	return s.ExpiresAt.After(time.Now())
 }
-
-// GenerateOrExtendSessionToken generate session token
-func (db *DB) GenerateOrExtendSessionToken(user *User) (*SessionToken, error) {
-	sessionToken := &SessionToken{}
-	if err := db.Joins("JOIN users ON session_Tokens.user_id = users.id").
-		Where("Session_Tokens.expires_At > ? AND users.id = ?", time.Now(), user.ID).
-		FirstOrInit(sessionToken).Error; err != nil {
-		return nil, err
-	}
-	if db.NewRecord(sessionToken) == false {
-		return sessionToken, nil
-	}
-	sessionToken.Token = tokenGenerator.GenerateRandomToken(32)
-	sessionToken.UserID = user.ID
-	sessionToken.ExpiresAt = time.Now().AddDate(0, 1, 0)
-	if err := db.Create(&sessionToken).Error; err != nil {
-		return nil, err
-	}
-	return sessionToken, nil
-}
-
-// FindSessionToken find session token
-func (db *DB) FindSessionToken(token string) (*SessionToken, error) {
-	sessionToken := &SessionToken{}
-	if err := db.Where("session_tokens.token = ?", token).Preload("User").First(&sessionToken).Error; err != nil {
-		return nil, err
-	}
-	return sessionToken, nil
-}

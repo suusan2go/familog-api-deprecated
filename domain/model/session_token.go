@@ -2,8 +2,6 @@ package model
 
 import (
 	"time"
-
-	"github.com/suusan2go/familog-api/lib/token_generator"
 )
 
 // SessionToken model
@@ -18,7 +16,7 @@ type SessionToken struct {
 }
 
 // IsValid valid token
-func (s SessionToken) IsValid() bool {
+func (s *SessionToken) IsValid() bool {
 	return s.ExpiresAt.After(time.Now())
 }
 

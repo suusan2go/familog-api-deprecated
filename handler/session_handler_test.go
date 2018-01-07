@@ -13,6 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/suusan2go/familog-api/domain/model"
 	"github.com/suusan2go/familog-api/lib/token_generator"
+	"github.com/suusan2go/familog-api/registry"
 )
 
 // PostSession return DiaryIndex json
@@ -37,7 +38,7 @@ func TestPostSession(t *testing.T) {
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		log.Println(c.FormParams())
-		h := &Handler{DB: &db}
+		h := &Handler{DB: &db, Registry: &registry.Registry{DB: &db}}
 
 		// Assertions
 		if assert.NoError(t, h.PostSession(c)) {

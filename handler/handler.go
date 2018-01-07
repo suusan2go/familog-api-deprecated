@@ -24,7 +24,8 @@ type AuthenticatedContext struct {
 func (h *Handler) Authenticate(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token := c.Request().Header.Get("Authorization")
-		sessionToken, err := h.DB.FindSessionToken(token)
+		repo := h.Registry.SessionRepository()
+		sessionToken, err := repo.FindSessionToken(token)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusForbidden, err)
 		}

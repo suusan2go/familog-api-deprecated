@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"github.com/labstack/echo"
 	"net/http"
+
+	"github.com/labstack/echo"
 )
 
 type sessionHandlerPostRequest struct {
@@ -11,6 +12,7 @@ type sessionHandlerPostRequest struct {
 
 // PostSession return DiaryIndex json
 func (h *Handler) PostSession(c echo.Context) error {
+	repo := h.Registry.SessionRepository()
 	r := &sessionHandlerPostRequest{}
 	if err := c.Bind(r); err != nil {
 		return err
@@ -19,7 +21,7 @@ func (h *Handler) PostSession(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	sessionToken, err := h.DB.GenerateOrExtendSessionToken(user)
+	sessionToken, err := repo.GenerateOrExtendSessionToken(user)
 	if err != nil {
 		return err
 	}

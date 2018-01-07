@@ -25,3 +25,8 @@ func (r Registry) DiaryRepository() repository.DiaryRepository {
 func (r Registry) DeviceRepository() repository.DeviceRepository {
 	return gorm.DeviceRepository{DB: r.DB}
 }
+
+// SessionRepository return DI
+func (r Registry) SessionRepository() repository.SessionRepository {
+	return gorm.SessionRepository{DB: r.DB}
+}

@@ -11,6 +11,14 @@ type DiaryEntryRepository struct {
 	DB *model.DB
 }
 
+// Save persist DiaryEntry
+func (repo DiaryEntryRepository) Save(diaryEntry *model.DiaryEntry) error {
+	if diaryEntry.ID == 0 {
+		return repo.DB.Create(diaryEntry).Error
+	}
+	return repo.DB.Update(diaryEntry).Error
+}
+
 // AllDiaryEntries GetAllDiaryEntries
 func (repo DiaryEntryRepository) AllDiaryEntries(diary *model.Diary) (*model.DiaryEntries, error) {
 	diaryEntries := &model.DiaryEntries{}

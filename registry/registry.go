@@ -16,6 +16,11 @@ func (r Registry) DiaryEntryRepository() repository.DiaryEntryRepository {
 	return gorm.DiaryEntryRepository{DB: r.DB}
 }
 
+// DiaryEntryImageRepository return DI
+func (r Registry) DiaryEntryImageRepository() repository.DiaryEntryImageRepository {
+	return gorm.DiaryEntryImageRepository{DB: r.DB}
+}
+
 // DiaryRepository return DI
 func (r Registry) DiaryRepository() repository.DiaryRepository {
 	return gorm.DiaryRepository{DB: r.DB}

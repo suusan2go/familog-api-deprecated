@@ -8,13 +8,13 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/suusan2go/familog-api/domain/service"
+	"github.com/suusan2go/familog-api/domain/model"
 )
 
 // PostDiaryEntry Create diary_entry
 func (h *Handler) PostDiaryEntry(c echo.Context) error {
 	ac := c.(*AuthenticatedContext)
-	repo := h.Registry.DiaryRepository()
-	diary, err := repo.FindDiary(c.Param("id"), &ac.CurrentUser)
+	diary, err := h.Registry.DiaryRepository().FindDiary(c.Param("id"), &ac.CurrentUser)
 	if err != nil {
 		return err
 	}
@@ -26,16 +26,24 @@ func (h *Handler) PostDiaryEntry(c echo.Context) error {
 		file2,
 		file3,
 	}
-	diaryEntry, err := h.DB.CreateDiaryEntry(
-		&ac.CurrentUser,
-		diary,
-		c.FormValue("title"),
-		c.FormValue("body"),
-		c.FormValue("emoji"),
-		images,
-	)
-	if err != nil {
+	diaryEntry := &model.DiaryEntry{
+		Title: c.FormValue("title"),
+		Body: c.FormValue("body"),
+		Emoji: c.FormValue("emoji"),
+		DiaryID: diary.ID,
+		UserID: ac.CurrentUser.ID,
+	}
+	if err := h.Registry.DiaryEntryRepository().Save(diaryEntry); err != nil {
 		return err
+	}
+	for _, image := range images {
+		if image == nil {
+			continue
+		}
+		diaryEntryImage := model.MapImageToDiaryEntryImage(image, *diaryEntry)
+		if err := h.Registry.DiaryEntryImageRepository().Save(diaryEntryImage); err != nil {
+			return err
+		}
 	}
 
 	if err := service.DiaryEntryNotificationService(h.Registry.DeviceRepository(), diaryEntry); err != nil {

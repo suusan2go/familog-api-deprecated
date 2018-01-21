@@ -20,6 +20,15 @@ type DiaryEntryImage struct {
 	UpdatedAt    time.Time `gorm:"not null" json:"updatedAt"`
 }
 
+// MapImageToDiaryEntryImage MapImageFile to DiaryEntryImage
+func MapImageToDiaryEntryImage(image *multipart.FileHeader, diaryEntry DiaryEntry) *DiaryEntryImage {
+	filePath := filepath.Join("diary_entry_images",
+		strconv.Itoa(int(diaryEntry.ID)),
+		tokenGenerator.GenerateRandomToken(16)+filepath.Ext(image.Filename),
+	)
+	return &DiaryEntryImage{FilePath: filePath, DiaryEntryID: diaryEntry.ID}
+}
+
 // CreateDiaryEntryImage create diary entry images
 func (db *DB) CreateDiaryEntryImage(file *multipart.FileHeader, diaryEntry *DiaryEntry) (*DiaryEntryImage, error) {
 	filePath := filepath.Join("diary_entry_images",
